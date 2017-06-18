@@ -30,7 +30,7 @@ class AccordionForm(ManageChildrenFormMixin, ModelForm):
 class BootstrapAccordionPlugin(TransparentWrapper, BootstrapPluginBase):
     name = _("Accordion")
     form = AccordionForm
-    default_css_class = 'panel-group'
+    default_css_class = ''
     require_parent = True
     parent_classes = ('BootstrapColumnPlugin',)
     direct_child_classes = ('BootstrapAccordionCardPlugin',)
