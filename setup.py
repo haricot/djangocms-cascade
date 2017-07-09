@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import os
+import subprocess
 
 from setuptools import setup, find_packages
 from cmsplugin_cascade import __version__
@@ -12,6 +14,26 @@ except ImportError:
     def convert(filename, fmt):
         with io.open(filename, encoding='utf-8') as fd:
             return fd.read()
+
+def create_mo_files():
+    data_files = []
+    localedir = 'cmsplugin_cascade/locale'
+    po_dirs = [localedir + '/' + l + '/LC_MESSAGES/'
+               for l in next(os.walk(localedir))[1]]
+    for d in po_dirs:
+        mo_files = []
+        po_files = [f
+                    for f in next(os.walk(d))[2]
+                    if os.path.splitext(f)[1] == '.po']
+        for po_file in po_files:
+            filename, extension = os.path.splitext(po_file)
+            mo_file = filename + '.mo'
+            msgfmt_cmd = 'msgfmt {} -o {}'.format(d + po_file, d + mo_file)
+            subprocess.call(msgfmt_cmd, shell=True)
+            mo_files.append(d + mo_file)
+        data_files.append((d, mo_files))
+    return data_files
+
 
 CLASSIFIERS = [
     'Development Status :: 4 - Beta',
@@ -42,4 +64,5 @@ setup(
     long_description=convert('README.md', 'rst'),
     include_package_data=True,
     zip_safe=False,
+    data_files=create_mo_files(),
 )
