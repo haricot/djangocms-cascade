@@ -217,8 +217,8 @@ class Bootstrap4Row(list):
                 if column.breaks[bp].fixed_units:
                     assert column.breaks[bp].bound is None
                     column.breaks[bp].bound = Bound(
-                        column.breaks[bp].fixed_units * self.bounds[bp].min / 12,
-                        column.breaks[bp].fixed_units * self.bounds[bp].max / 12,
+                        round(column.breaks[bp].fixed_units * self.bounds[bp].min / 12, 1),
+                        round(column.breaks[bp].fixed_units * self.bounds[bp].max / 12, 1),
                     )
                     remaining_width -= column.breaks[bp].bound
 
@@ -231,7 +231,7 @@ class Bootstrap4Row(list):
                         assert column.breaks[bp].bound is None
                         column.breaks[bp].bound = Bound(
                             30,
-                            remaining_width.max - 30 * (flex_columns + auto_columns),
+                            30 + remaining_width.max - 30 * (flex_columns + auto_columns),
                         )
             else:
                 # we use flex-columns exclusively, therefore subdivide the remaining width
