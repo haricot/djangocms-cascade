@@ -23,7 +23,7 @@ if not os.path.isdir(WORK_DIR):
 
 SITE_ID = 1
 
-ROOT_URLCONF = 'bs3demo.urls'
+ROOT_URLCONF = 'bs4demo.urls'
 
 SECRET_KEY = 'secret'
 
@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'sass_processor',
     'sekizai',
-    'bs3demo',
+    'bs4demo',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -125,7 +125,7 @@ TEMPLATES = [{
             'django.contrib.messages.context_processors.messages',
             'sekizai.context_processors.sekizai',
             'cms.context_processors.cms_settings',
-            'bs3demo.context_processors.cascade',
+            'bs4demo.context_processors.cascade',
         ),
     },
 }]
@@ -185,8 +185,8 @@ if sys.argv[1] == 'test':
     )
 else:
     CMS_TEMPLATES = (
-         ('bs3demo/main.html', "Main Content"),
-         ('bs3demo/wrapped.html', "Wrapped Bootstrap Column"),
+         ('bs4demo/main.html', "Main Content"),
+         ('bs4demo/wrapped.html', "Wrapped Bootstrap Column"),
     )
 
 CMS_SEO_FIELDS = True
@@ -202,8 +202,8 @@ CMSPLUGIN_CASCADE_PLUGINS = (
     'cmsplugin_cascade.generic',
     'cmsplugin_cascade.leaflet',
     'cmsplugin_cascade.link',
-    'cmsplugin_cascade.bootstrap3',
-    'bs3demo',
+    'cmsplugin_cascade.bootstrap4',
+    'bs4demo',
 )
 
 CMSPLUGIN_CASCADE = {
