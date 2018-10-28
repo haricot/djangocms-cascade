@@ -222,14 +222,15 @@ CMSPLUGIN_CASCADE = {
 }
 
 CASCADE_WORKAREA_GLOSSARY = {
-    'breakpoints': ['xs', 'sm', 'md', 'lg'],
-    'container_max_widths': {'xs': 750, 'sm': 750, 'md': 970, 'lg': 1170},
+    'breakpoints': ['xs', 'sm', 'md', 'lg','xl'],
+    'container_max_widths': {'xs': 576,'sm': 768,'md': 992, 'lg': 1200, 'xl': 1980,},
     'fluid': False,
     'media_queries': {
-        'xs': ['(max-width: 768px)'],
-        'sm': ['(min-width: 768px)', '(max-width: 992px)'],
-        'md': ['(min-width: 992px)', '(max-width: 1200px)'],
-        'lg': ['(min-width: 1200px)'],
+        'xs': ['(max-width: 576px)'],
+        'sm': ['(min-width: 576px)', '(max-width: 768px)'],
+        'md': ['(min-width: 768px)', '(max-width: 992px)'],
+        'lg': ['(min-width: 992px)', '(max-width: 1200px)'],
+        'xl': ['(min-width: 1200px)'],
     },
 }
 
