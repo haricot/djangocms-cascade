@@ -216,7 +216,7 @@ class BootstrapColumnPlugin(BootstrapPluginBase):
                         "Can not add BootstrapColumnPlugin without BootstrapContainerPlugin or BootstrapJumbotronPlugin")
         else:
             try:
-	        query = Q(plugin_type='BootstrapContainerPlugin')
+                query = Q(plugin_type='BootstrapContainerPlugin')
                 container = obj.get_ancestors().order_by('depth').filter(query).last().get_bound_plugin()
             except AttributeError:
                 try:
