@@ -43,11 +43,12 @@ class CascadeTestCase(CMSTestCase, BaseTestCase):
             },
         }
 
-        self.extra_fields_tabset = PluginExtraFields.objects.create(plugin_type='PluginExtraFieldsConfig', site=self.site)
+        self.extra_fields = PluginExtraFields.objects.create(plugin_type='PluginExtraFieldsConfig', site=self.site)
         self.extra_fields.inline_styles.update({'extra_fields:Border':'border-top'})
         self.extra_fields.inline_styles.update({'extra_fields:Border Radius': ['border-radius']})
         self.extra_fields.inline_styles.update({'extra_units:Border Radius':'px,rem'})
         self.extra_fields.save()
+        
     def get_request_context(self):
         context = {}
         context['request'] = self.request
