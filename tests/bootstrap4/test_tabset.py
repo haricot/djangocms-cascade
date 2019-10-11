@@ -20,6 +20,8 @@ def bootstrap_tabset(rf, admin_site, bootstrap_column):
     tabset_plugin = tabset_model.get_plugin_class_instance(admin_site)
     assert isinstance(tabset_plugin, BootstrapTabSetPlugin)
     ModelForm = tabset_plugin.get_form(request, tabset_model)
+    assert 'extra_css_classes' in list(ModelForm.declared_fields)
+    assert ('nav-tabs', 'nav-tabs') in list(ModelForm.declared_fields['extra_css_classes']._choices)
     data = {
               "num_children": 1, 
               "hide_plugin": False,
@@ -28,8 +30,6 @@ def bootstrap_tabset(rf, admin_site, bootstrap_column):
               ],
               "justified":False,
             }
-    assert 'extra_css_classes' in list(ModelForm.declared_fields)
-    assert ('nav-tabs', 'nav-tabs') in list(ModelForm.declared_fields['extra_css_classes']._choices)
     form = ModelForm(data, None, instance=tabset_model)
     assert form.is_valid()
     tabset_plugin.save_model(request, tabset_model, form, False)
@@ -41,6 +41,9 @@ def test_edit_tabset(rf, admin_site, bootstrap_tabset):
     request = rf.get('/')
     tabset_plugin, tabset_model = bootstrap_tabset
     ModelForm = tabset_plugin.get_form(request, tabset_model)
+    assert 'extra_css_classes' in list(ModelForm.declared_fields)
+    assert ('nav-tabs', 'nav-tabs') in list(ModelForm.declared_fields['extra_css_classes']._choices)
+    assert 'extra_inline_styles:border-radius' in list(ModelForm.declared_fields['custom_css_classes_and_styles']._choices)
     data = {
               "num_children": 1, 
               "hide_plugin": False,
@@ -49,11 +52,6 @@ def test_edit_tabset(rf, admin_site, bootstrap_tabset):
               ],
               "justified":False,
             }
-    assert 'extra_css_classes' in list(ModelForm.declared_fields)
-    assert ('nav-tabs', 'nav-tabs') in list(ModelForm.declared_fields['extra_css_classes']._choices)
-    assert 'extra_inline_styles:border-radius' in list(ModelForm.declared_fields['custom_css_classes_and_styles'].__dict__)
-    assert 'extra_inline_styles:border-radius' in list(ModelForm.declared_fields['custom_css_classes_and_styles']._choices)
-    
     form = ModelForm(data, None, instance=tabset_model)
     assert form.is_valid()
     assert ('nav-tabs', 'nav-tabs') in form['extra_css_classes']._choices
