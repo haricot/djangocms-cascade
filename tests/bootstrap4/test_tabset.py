@@ -30,10 +30,8 @@ def bootstrap_tabset(rf, admin_site, bootstrap_column):
             }
     assert 'extra_css_classes' in list(ModelForm.declared_fields)
     assert ('nav-tabs', 'nav-tabs') in list(ModelForm.declared_fields['extra_css_classes']._choices)
-    assert 'nav-tabs' in list(ModelForm.declared_fields['extra_css_classes'].__dict__)
     form = ModelForm(data, None, instance=tabset_model)
     assert form.is_valid()
-    assert 'nav-tabs' in form['glossary']
     tabset_plugin.save_model(request, tabset_model, form, False)
     return tabset_plugin, tabset_model
 
@@ -52,8 +50,9 @@ def test_edit_tabset(rf, admin_site, bootstrap_tabset):
               "justified":False,
             }
     assert 'extra_css_classes' in list(ModelForm.declared_fields)
-    assert 'nav-tabs' in list(ModelForm.declared_fields['extra_css_classes'])
-    assert 'nav-tabs' in list(ModelForm.declared_fields['extra_css_classes'].__dict__)
+    assert ('nav-tabs', 'nav-tabs') in list(ModelForm.declared_fields['extra_css_classes']._choices)
+    assert ('nav-tabs', 'nav-tabs') in list(ModelForm.declared_fields['extra_inline_styles:border-radius']._choices)
+    
     form = ModelForm(data, None, instance=tabset_model)
     assert form.is_valid()
     assert ('nav-tabs', 'nav-tabs') in form['extra_css_classes']._choices
