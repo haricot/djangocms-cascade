@@ -45,7 +45,7 @@ def test_merge_extra_fields_tabset(rf, admin_site, bootstrap_tabset):
     assert ('nav-tabs', 'nav-tabs') in list(ModelForm.declared_fields['extra_css_classes']._choices)
     if hasattr(ModelForm.declared_fields['custom_css_classes_and_styles'],'_choices'):
 #        assert 'extra_inline_styles:border-radius' in list(ModelForm.base_fields.__dict__)
-        assert 'extra_inline_styles:border-radius' in list(dir(ModelForm.Meta.))
+        assert 'extra_inline_styles:border-radius' in list(dir(ModelForm.Meta))
         assert 'extra_inline_styles:border-radius' in list(ModelForm.base_fields['custom_css_classes_and_styles']._choices)
     data = {
               "num_children": 1, 
