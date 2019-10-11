@@ -51,7 +51,7 @@ def test_edit_tabset(rf, admin_site, bootstrap_tabset):
             }
     assert 'extra_css_classes' in list(ModelForm.declared_fields)
     assert ('nav-tabs', 'nav-tabs') in list(ModelForm.declared_fields['extra_css_classes']._choices)
-    assert ('nav-tabs', 'nav-tabs') in list(ModelForm.declared_fields['extra_inline_styles:border-radius']._choices)
+    assert ('nav-tabs', 'nav-tabs') in list(ModelForm.declared_fields)
     
     form = ModelForm(data, None, instance=tabset_model)
     assert form.is_valid()
