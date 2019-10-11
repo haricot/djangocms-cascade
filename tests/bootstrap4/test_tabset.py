@@ -37,13 +37,14 @@ def bootstrap_tabset(rf, admin_site, bootstrap_column):
 
 
 @pytest.mark.django_db
-def test_edit_tabset(rf, admin_site, bootstrap_tabset):
+def test_merge_extra_fields_tabset(rf, admin_site, bootstrap_tabset):
     request = rf.get('/')
     tabset_plugin, tabset_model = bootstrap_tabset
     ModelForm = tabset_plugin.get_form(request, tabset_model)
     assert 'extra_css_classes' in list(ModelForm.declared_fields)
     assert ('nav-tabs', 'nav-tabs') in list(ModelForm.declared_fields['extra_css_classes']._choices)
-    assert 'extra_inline_styles:border-radius' in list(ModelForm.declared_fields['custom_css_classes_and_styles']._choices)
+    if hasattr(ModelForm.declared_fields['custom_css_classes_and_styles'],_choices):
+        assert 'extra_inline_styles:border-radius' in list(ModelForm.declared_fields['custom_css_classes_and_styles']._choices)
     data = {
               "num_children": 1, 
               "hide_plugin": False,
