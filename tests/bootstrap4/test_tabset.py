@@ -30,7 +30,7 @@ def bootstrap_tabset(rf, admin_site, bootstrap_column):
             }
     form = ModelForm(data, None, instance=tabset_model)
     assert form.is_valid()
-    assert 'nav-tabs' in form.base_fields['extra_css_classes']
+    assert ('nav-tabs', 'nav-tabs') in form['extra_css_classes']._choices
     tabset_plugin.save_model(request, tabset_model, form, False)
     return tabset_plugin, tabset_model
 
@@ -50,6 +50,6 @@ def test_edit_tabset(rf, admin_site, bootstrap_tabset):
             }
     form = ModelForm(data, None, instance=tabset_model)
     assert form.is_valid()
-    assert 'nav-tabs' in form.base_fields['extra_css_classes']
-    assert 'border-radius' in form.base_fields['extra_inline_styles']
+    assert ('nav-tabs', 'nav-tabs') in form['extra_css_classes']._choices
+    assert 'extra_inline_styles:border-radius' in form_fields.keys()
     tabset_plugin.save_model(request, tabset_model, form, False)
