@@ -10,12 +10,12 @@ from cmsplugin_cascade.models import CascadePage
 from cmsplugin_cascade.models import PluginExtraFields
 from cmsplugin_cascade.extra_fields.config import PluginExtraFieldsConfig
 from django.contrib.sites.shortcuts import get_current_site
-from cmsplugin_cascade.app_settings import AppSettings
+from cmsplugin_cascade import app_settings
 
 from djangocms_helper.base_test import BaseTestCase
 
 
-class CascadeTestCase(CMSTestCase, BaseTestCase, AppSettings):
+class CascadeTestCase(CMSTestCase, BaseTestCase):
     home_page = None
 
     def setUp(self):
