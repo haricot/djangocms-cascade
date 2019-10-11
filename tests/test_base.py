@@ -6,6 +6,8 @@ from django.template.context import Context
 from cms.api import create_page
 from cms.test_utils.testcases import CMSTestCase
 from cmsplugin_cascade.models import CascadePage
+from cmsplugin_cascade.models import PluginExtraFields
+from cmsplugin_cascade.extra_fields.config import PluginExtraFieldsConfig
 
 from djangocms_helper.base_test import BaseTestCase
 
@@ -24,7 +26,28 @@ class CascadeTestCase(CMSTestCase, BaseTestCase):
 
         self.request = self.get_request(self.home_page, 'en')
         self.admin_site = admin.sites.AdminSite()
+        self.site = get_current_site(self.request)
+        self.setting['CASCADE_PLUGINS'] = {
+            'plugins_with_extra_fields': {
+                 'BootstrapContainerPlugin': PluginExtraFieldsConfig(
+                    inline_styles={
+                        'extra_fields:Border Radius': ['border-radius'],
+                        'extra_units:Border Radius': 'px,rem',
 
+                    },
+                            css_classes={
+                        'multiple': True,
+                        'class_names': ['custom', 'custom2'],
+                    },
+                ),
+            },
+        }
+
+        self.extra_fields_tabset = PluginExtraFields.objects.create(plugin_type='PluginExtraFieldsConfig', site=self.site)
+        self.extra_fields.inline_styles.update({'extra_fields:Border':'border-top'})
+        self.extra_fields.inline_styles.update({'extra_fields:Border Radius': ['border-radius']})
+        self.extra_fields.inline_styles.update({'extra_units:Border Radius':'px,rem'})
+        self.extra_fields.save()
     def get_request_context(self):
         context = {}
         context['request'] = self.request
