@@ -30,7 +30,7 @@ def bootstrap_tabset(rf, admin_site, bootstrap_column):
             }
     form = ModelForm(data, None, instance=tabset_model)
     assert form.is_valid()
-    assert 'nav-tabs' in form.extra_css_classes'
+    assert 'nav-tabs' in form.extra_css_classes
     tabset_plugin.save_model(request, tabset_model, form, False)
     return tabset_plugin, tabset_model
 
