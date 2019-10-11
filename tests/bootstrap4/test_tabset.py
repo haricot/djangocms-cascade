@@ -39,7 +39,15 @@ def test_edit_tabset(rf, admin_site, bootstrap_tabset):
     request = rf.get('/')
     tabset_plugin, tabset_model = bootstrap_tabset
     ModelForm = tabset_plugin.get_form(request, tabset_model)
-    form = ModelForm({}, None, instance=tabset_model)
+    data = {
+              "hide_plugin":"false",
+              "extra_css_classes":[
+                "nav-tabs"
+              ],
+              "justified":"false",
+            }
+    form = ModelForm(data, None, instance=tabset_model)
     assert form.is_valid()
     assert 'nav-tabs' in form.base_fields['extra_css_classes']
+    assert 'border-radius' in form.base_fields['extra_inline_styles']
     tabset_plugin.save_model(request, tabset_model, form, False)
