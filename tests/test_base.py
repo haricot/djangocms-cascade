@@ -31,11 +31,10 @@ class CascadeTestCase(CMSTestCase, BaseTestCase):
         self.admin_site = admin.sites.AdminSite()
         
         self.site = get_current_site(self.request)
-        self.extra_fields = PluginExtraFields.objects.create(plugin_type='PluginExtraFieldsConfig', site=self.site)
+        self.extra_fields = PluginExtraFields.objects.create(plugin_type='BootstrapTabSetPlugin', site=self.site)
         self.extra_fields.inline_styles.update({'extra_fields:Border':'border-top'})
         self.extra_fields.inline_styles.update({'extra_fields:Border Radius': ['border-radius']})
         self.extra_fields.inline_styles.update({'extra_units:Border Radius':'px,rem'})
-        self.extra_fields.css_classes = "custom"
         self.extra_fields.save()
         
     def get_request_context(self):
