@@ -28,7 +28,7 @@ def bootstrap_tabset(rf, admin_site, bootstrap_column):
               ],
               "justified":False,
             }
-    assert 'nav-tabs' in tabset_model
+    assert 'nav-tabs' in ModelForm.__dict__
     form = ModelForm(data, None, instance=tabset_model)
     assert form.is_valid()
     assert 'nav-tabs' in form['glossary']
