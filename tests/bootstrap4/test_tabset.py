@@ -6,7 +6,7 @@ from django.utils.html import strip_spaces_between_tags, strip_tags
 from cms.utils.plugins import build_plugin_tree
 from cmsplugin_cascade.models import CascadeElement
 from cmsplugin_cascade.bootstrap4.tabs import BootstrapTabSetPlugin
-
+from django.contrib.sites.shortcuts import get_current_site
 
 @pytest.fixture
 @pytest.mark.django_db
