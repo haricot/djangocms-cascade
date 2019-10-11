@@ -10,7 +10,7 @@ from django.contrib.sites.shortcuts import get_current_site
 
 @pytest.fixture
 @pytest.mark.django_db
-def bootstrap_tabset(self, rf, admin_site, bootstrap_column):
+def bootstrap_tabset(rf, admin_site, bootstrap_column):
     request = rf.get('/')
     column_plugin, column_model = bootstrap_column
 
@@ -37,7 +37,7 @@ def bootstrap_tabset(self, rf, admin_site, bootstrap_column):
 
 
 @pytest.mark.django_db
-def test_merge_extra_fields_tabset(self, rf, admin_site, bootstrap_tabset):
+def test_merge_extra_fields_tabset(rf, admin_site, bootstrap_tabset):
     request = rf.get('/')
     tabset_plugin, tabset_model = bootstrap_tabset
     ModelForm = tabset_plugin.get_form(request, tabset_model)
