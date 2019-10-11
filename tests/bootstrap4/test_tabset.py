@@ -54,6 +54,4 @@ def test_edit_tabset(rf, admin_site, bootstrap_tabset):
             }
     form = ModelForm(data, None, instance=tabset_model)
     assert form.is_valid()
-    assert ('nav-tabs', 'nav-tabs') in form['extra_css_classes']._choices
-    assert 'extra_inline_styles:border-radius' in form_fields.keys()
     tabset_plugin.save_model(request, tabset_model, form, False)
