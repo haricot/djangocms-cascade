@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.conf import settings
 from django.contrib import admin
 from django.template.context import Context
 from cms.api import create_page
@@ -29,7 +30,7 @@ class CascadeTestCase(CMSTestCase, BaseTestCase):
         self.admin_site = admin.sites.AdminSite()
         
         self.site = get_current_site(self.request)
-        self.setting['CASCADE_PLUGINS'] = {
+        setting['CASCADE_PLUGINS'] = {
             'plugins_with_extra_fields': {
                  'BootstrapContainerPlugin': PluginExtraFieldsConfig(
                     inline_styles={
