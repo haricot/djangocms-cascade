@@ -44,9 +44,8 @@ def test_merge_extra_fields_tabset(rf, admin_site, bootstrap_tabset):
     assert 'extra_css_classes' in list(ModelForm.declared_fields)
     from cmsplugin_cascade.models import PluginExtraFields
     assert ('nav-tabs', 'nav-tabs') in list(ModelForm.declared_fields['extra_css_classes']._choices)
-    assert 'custom' in list(ModelForm.declared_fields['extra_css_classes']._choices)
+    assert 'extra_inline_styles:border-radius' in list(ModelForm.base_fields.__dict__)
     if hasattr(ModelForm.declared_fields['custom_css_classes_and_styles'],'_choices'):
-        assert 'extra_inline_styles:border-radius' in list(ModelForm.base_fields.__dict__)
         assert 'extra_inline_styles:border-radius' in list(ModelForm.base_fields['custom_css_classes_and_styles']._choices)
     data = {
               "num_children": 1, 
