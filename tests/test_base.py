@@ -34,6 +34,7 @@ class CascadeTestCase(CMSTestCase, BaseTestCase):
         self.extra_fields.inline_styles.update({'extra_fields:Border':'border-top'})
         self.extra_fields.inline_styles.update({'extra_fields:Border Radius': ['border-radius']})
         self.extra_fields.inline_styles.update({'extra_units:Border Radius':'px,rem'})
+        self.extra_fields.css_classes = "custom"
         self.extra_fields.save()
         
     def get_request_context(self):
