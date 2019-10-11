@@ -24,3 +24,5 @@ before_script:
 
 script:
   - tox -e"$PYVER-$DJANGO-$CMS"
+
+cache: pip
