@@ -30,7 +30,7 @@ class CascadeTestCase(CMSTestCase, BaseTestCase):
         self.admin_site = admin.sites.AdminSite()
         
         self.site = get_current_site(self.request)
-        setting['CASCADE_PLUGINS'] = {
+        settings['CASCADE_PLUGINS'] = {
             'plugins_with_extra_fields': {
                  'BootstrapContainerPlugin': PluginExtraFieldsConfig(
                     inline_styles={
