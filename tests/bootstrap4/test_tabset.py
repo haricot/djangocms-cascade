@@ -21,11 +21,11 @@ def bootstrap_tabset(rf, admin_site, bootstrap_column):
     assert isinstance(tabset_plugin, BootstrapTabSetPlugin)
     ModelForm = tabset_plugin.get_form(request, tabset_model)
     data = {
-              "hide_plugin":false,
+              "hide_plugin":"false",
               "extra_css_classes":[
                 "nav-tabs"
               ],
-              "justified":false,
+              "justified":"false",
             }
     form = ModelForm(data, None, instance=tabset_model)
     assert form.is_valid()
