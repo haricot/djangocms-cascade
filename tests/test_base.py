@@ -26,6 +26,7 @@ class CascadeTestCase(CMSTestCase, BaseTestCase):
 
         self.request = self.get_request(self.home_page, 'en')
         self.admin_site = admin.sites.AdminSite()
+        
         self.site = get_current_site(self.request)
         self.setting['CASCADE_PLUGINS'] = {
             'plugins_with_extra_fields': {
@@ -33,16 +34,14 @@ class CascadeTestCase(CMSTestCase, BaseTestCase):
                     inline_styles={
                         'extra_fields:Border Radius': ['border-radius'],
                         'extra_units:Border Radius': 'px,rem',
-
                     },
-                            css_classes={
+                     css_classes={
                         'multiple': True,
                         'class_names': ['custom', 'custom2'],
                     },
                 ),
             },
         }
-
         self.extra_fields = PluginExtraFields.objects.create(plugin_type='PluginExtraFieldsConfig', site=self.site)
         self.extra_fields.inline_styles.update({'extra_fields:Border':'border-top'})
         self.extra_fields.inline_styles.update({'extra_fields:Border Radius': ['border-radius']})
