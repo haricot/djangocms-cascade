@@ -7,6 +7,7 @@ from cms.utils.plugins import build_plugin_tree
 from cmsplugin_cascade.models import CascadeElement
 from cmsplugin_cascade.bootstrap4.tabs import BootstrapTabSetPlugin
 
+
 @pytest.fixture
 @pytest.mark.django_db
 def bootstrap_tabset(rf, admin_site, bootstrap_column):
@@ -24,3 +25,14 @@ def bootstrap_tabset(rf, admin_site, bootstrap_column):
     assert 'nav-tabs' in form.base_fields['extra_css_classes']
     tabset_plugin.save_model(request, tabset_model, form, False)
     return tabset_plugin, tabset_model
+
+
+@pytest.mark.django_db
+def test_edit_tabset(rf, admin_site, bootstrap_tabset):
+    request = rf.get('/')
+    tabset_plugin, tabset_model = bootstrap_tabset
+    ModelForm = tabset_plugin.get_form(request, tabset_model)
+    form = ModelForm(data, None, instance=tabset_model)
+    assert form.is_valid()
+    assert 'nav-tabs' in form.base_fields['extra_css_classes']
+    tabset_plugin.save_model(request, tabset_model, form, False)
