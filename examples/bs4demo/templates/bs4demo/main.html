@@ -6,7 +6,7 @@
 {% endblock head %}
 
 {% block header %}
-{% static_placeholder 'Header Content' %}
+{% static_placeholder 'Navbar Content' %}
 {% if request.toolbar and request.toolbar.edit_mode_active %}
 {% addtoblock "js" %}
 <script> 
@@ -24,21 +24,6 @@ observer.observe($('.cms-structure-content')[0], { childList: true});
 {% endif %}
 
 {% if cms_version >= "3.5.0" and request.toolbar  %}
-{% endif %}
-
-{% endblock header %}
-
-{% if cms_version >= "3.5.0" and request.toolbar %}
-	<style>
-	body { padding-top:46px; }
-	.fixed-top {  top: 46px !important;}
-	</style>
-{% endif %}
-{% if cms_version >= "3.5.0" and request.toolbar %}
-	<style>
-	body { padding-top:46px; }
-	.fixed-top {  top: 46px !important;}
-	</style>
 {% endif %}
 
 {% endblock header %}
