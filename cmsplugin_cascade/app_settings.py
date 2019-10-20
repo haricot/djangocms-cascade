@@ -1,3 +1,4 @@
+
 class AppSettings(object):
 
     def _setting(self, name, default=None):

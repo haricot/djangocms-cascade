@@ -12,11 +12,7 @@ from cmsplugin_cascade.cms_toolbars import CascadeToolbar
 from cmsplugin_cascade.clipboard.library.utils import deserialize_to_clipboard, _get_parsed_data_cascade
 from django.contrib.auth.decorators import login_required
 from cms.models import CMSPlugin
-
-try:
-    from cms.toolbar.utils import get_plugin_tree_as_json
-except BaseException:
-    from cmsplugin_cascade.clipslib.utils_backport_cms34 import get_plugin_tree_as_json
+from cms.toolbar.utils import get_plugin_tree_as_json
 
 if getattr(settings, 'CASCADE_CLIPS_LIBRARY', None):
     class CascadeCopyToClipboard(View):

@@ -16,7 +16,6 @@ Instead of creating one database model for each CMS plugin, Cascade shares one d
 all of them. The payload then is stored inside a JSON field instead of declaring each attribute
 explicitly. This furthermore prevents us to handle all kind of nasty database migration problems.
 
-
 ## Version 1.0
 
 Version 1.0 of **djangocms-cascade** is a major release with a much simpler way of writing your
