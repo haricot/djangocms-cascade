@@ -1,5 +1,4 @@
-djangocms-cascade
-==================================================================================================================================================
+# djangocms-cascade
 
 [![Build Status](https://travis-ci.org/jrief/djangocms-cascade.png?branch=master)](https://travis-ci.org/jrief/djangocms-cascade)
 [![Python versions](https://img.shields.io/pypi/pyversions/djangocms-cascade.svg)](https://pypi.python.org/pypi/djangocms-cascade)
@@ -7,15 +6,30 @@ djangocms-cascade
 [![Gitter chat room](https://badges.gitter.im/jrief/djangocms-cascade.svg)](https://gitter.im/awesto/djangocms-cascade)
  [![Latest version on PyPI](https://img.shields.io/pypi/v/djangocms-cascade.svg)](https://pypi.python.org/pypi/djangocms-cascade)
 
-**DjangoCMS-Cascade** is the Swiss army knife for working with Django-CMS plugins.
+The Swiss army knife for working with Django-CMS plugins.
 
-# Why Use DjangoCMS-Cascade?
+## Why Use DjangoCMS-Cascade?
 
 **DjangoCMS-Cascade** is a collection of plugins for Django-CMS
 [placeholders](http://docs.django-cms.org/en/latest/introduction/templates_placeholders.html#templates-placeholders).
 Instead of creating one database model for each CMS plugin, Cascade shares one database model for
 all of them. The payload then is stored inside a JSON field instead of declaring each attribute
 explicitly. This furthermore prevents us to handle all kind of nasty database migration problems.
+
+
+## Version 1.0
+
+Version 1.0 of **djangocms-cascade** is a major release with a much simpler way of writing your
+own plugins. There you can use [Django forms to create editors](https://github.com/jrief/django-entangled)
+for your plugin models, still keeping all its data inside JSON fields.
+
+**Important Note:** In version 1, the internal structure of many Cascade plugins changed. Running
+`./manage.py migrate cmsplugin_cascade` converts these fields, however no backward migration has
+been provided yet. Please assure to backup your database before upgrading.
+
+In addition, version 1 drops support for Python-2.7 and adds support for django-CMS-3.6 and
+Django-2.0/2.1.
+
 
 ### Perfect for nested grid systems
 
@@ -46,13 +60,6 @@ Since the payload of plugins is already serialized, we can even copy them from o
 site supporting **djangocms-cascade**.
 
 
-### Additional features in version 0.16
-
-* Simplifies to extend links onto models outside Cascade/CMS.
-* Icons inside the `TextPlugin` can have an optional link.
-* Added `TextImagePlugin` allowing to add simple images inside the CKEditor.
-
-
 ## Documentation
 
 Find detailed documentation on [ReadTheDocs](http://djangocms-cascade.readthedocs.io/en/latest/).
@@ -66,10 +73,10 @@ before upgrading from an older version.
 ### It's pluggable
 
 **DjangoCMS-Cascade** is very modular, keeping its CMS modules in functional groups. These groups
-have to be activated independently in your ``settings.py``. It also is possible to activate only
-certain plugins out of a group. One such group is ``cmsplugin_cascade.bootstrap3``, but it could be
-replaced by a future **Bootstrap-4**, the **Foundation**, **Angular Material** or whatever other CSS
-framework you prefer.
+have to be activated independently in the project's `settings.py`. It also is possible to activate only
+certain plugins out of a group. Currently there are two such groups, `cmsplugin_cascade.bootstrap3` and
+`cmsplugin_cascade.bootstrap4`, but this list could be extended by say, **Foundation**,
+**Angular Material** or whatever other CSS framework you prefer.
 
 
 ### Configurable individually
@@ -128,8 +135,8 @@ displays.
   templates.
 * Since all the data is stored in JSON, no database migration is required if a field is added,
   modified or removed from the plugin.
-* Currently **Bootstrap-3.x** is supported, but other CSS frameworks can be easily added in a
-  pluggable manner.
+* Currently **Bootstrap-3** and **Bootstrap-4** is supported, but other CSS frameworks can be
+  easily added in a pluggable manner.
 * It follows the "batteries included" philosophy, but still remains very modular.
 
 In addition to easily implement any kind of plugin, **DjangoCMS-Cascade** makes it possible to add
@@ -147,7 +154,7 @@ reusable helpers. Such a helper enriches a plugin with an additional, configurab
 
 ### Help needed
 
-If someone wants to start a subproject for a CSS framework, other than Bootstrap-3. 
+If someone wants to start a subproject for a CSS framework, other than Bootstrap-3/4.
 
 If you are a native English speaker, please check the documentation for spelling mistakes and
-grammar, since English not my mother tongue.
+grammar, since English is not my mother tongue.
