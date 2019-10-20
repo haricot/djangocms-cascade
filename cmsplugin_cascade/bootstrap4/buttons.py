@@ -63,7 +63,7 @@ class ButtonSizeWidget(widgets.RadioSelect):
 
 class BootstrapButtonMixin(IconPluginMixin):
     require_parent = True
-    parent_classes = ('BootstrapColumnPlugin', 'SimpleWrapperPlugin', 'NavbarNavItemsPlugin')
+    parent_classes = ('BootstrapColumnPlugin', 'SimpleWrapperPlugin')
     render_template = 'cascade/bootstrap4/button.html'
     allow_children = False
     default_css_class = 'btn'
