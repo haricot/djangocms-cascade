@@ -17,6 +17,7 @@ class CascadeConfig(AppConfig):
         if stylesSet != 'default:{}'.format(reverse('admin:cascade_texteditor_config')):
             msg = "settings.CKEDITOR_SETTINGS['stylesSet'] should be `format_lazy('default:{}', reverse_lazy('admin:cascade_texteditor_config'))`"
             raise ImproperlyConfigured(msg)
+
         pre_migrate.connect(self.__class__.pre_migrate, sender=self)
         post_migrate.connect(self.__class__.post_migrate, sender=self)
 
