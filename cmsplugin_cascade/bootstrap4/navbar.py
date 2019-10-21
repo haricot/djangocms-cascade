@@ -15,7 +15,6 @@ from cmsplugin_cascade.link.config import LinkPluginBase
 from django.forms import widgets
 from django.forms.fields import BooleanField, CharField, ChoiceField 
 
-from django.utils.translation import ugettext_lazy as _
 from cms.plugin_pool import plugin_pool
 from entangled.forms import EntangledModelFormMixin
 
