@@ -18,6 +18,8 @@ django-select2 = "*"
 djangocms-bootstrap = "*"
 django-admin-sortable2 = "*"
 libsass = "*"
+djangocms-history = "*"
+djangocms-transfer = "*"
 
 [dev-packages]
 tox = "*"
