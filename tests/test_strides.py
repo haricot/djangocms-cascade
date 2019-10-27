@@ -130,7 +130,7 @@ class StridePluginTest(CascadeTestCase):
         slide = carousel.find(class_='carousel-inner')
         self.assertSetEqual(set(slide.div.attrs['class']), {'carousel-item', 'active'})
 
-     def test_button_plugin(self):
+    def test_button_plugin(self):
         template = Template('{% load cascade_tags %}{% render_cascade "strides/bootstrap-button.json" %}')
         html = template.render(self.context)
         soup = BeautifulSoup(html, features='lxml')
