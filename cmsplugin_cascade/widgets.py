@@ -207,6 +207,7 @@ class MultipleTextInputWidget(widgets.MultiWidget):
                                             '<div class="sibling-field"><label for="{2}">{1}</label>{0}</div>',
                                             widgets))
 
+    
 
 class BorderChoiceWidget(AColorPickerMixin, widgets.MultiWidget):
     """
