@@ -40,7 +40,7 @@ setup(
         'requests',
     ],
     dependency_links=[
-        'https://github.com/haricot/djangocms-cascade/archive/patch-44.zip'
+        'https://github.com/haricot/django-entangled/tree/preserve_deepcopy'
     ],
     license='MIT',
     platforms=['OS Independent'],
