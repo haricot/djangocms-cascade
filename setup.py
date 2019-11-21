@@ -34,11 +34,13 @@ setup(
         'django>=1.11,<3.0',
         'django-classy-tags>=0.8',
         'django-cms>=3.5,<4',
-        #'django-entangled',
-        'pip @ https://github.com/haricot/djangocms-cascade/archive/patch-44.zip',
+        'django-entangled',
         'djangocms-text-ckeditor>=3.7',
         'jsonfield',
         'requests',
+    ],
+    dependency_links=[
+        'https://github.com/haricot/djangocms-cascade/archive/patch-44.zip'
     ],
     license='MIT',
     platforms=['OS Independent'],
