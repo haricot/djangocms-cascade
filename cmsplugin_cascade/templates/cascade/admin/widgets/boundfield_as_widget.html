@@ -1,13 +1,13 @@
 {% load i18n %} 
 <div class="container-title"> 
-    <div class="help_input">
-        <b>{{title_label}}</b>
-        <i class=icon-{{title_label}}-title></i>
+    <b>{{title}}</b>
+    <div>
+        <i class="{{ icon }}"></i>
+    </div>
+    <div>
+       <input type="checkbox" class="help_cascade"/>Help</input>
     </div>
 </div>
-<div class="container-nested">
+<div class="container-nested" style=" ">
      <ul class="cascade-horizontal">{{output_widgets}}</ul>
 </div>
-<div class="collapse">
-    {{help_text}}
-<div>
