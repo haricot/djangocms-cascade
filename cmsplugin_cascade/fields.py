@@ -2,8 +2,9 @@ import re
 import json
 import warnings
 from django import VERSION as DJANGO_VERSION
-from django.db.models.fields.related import ManyToOneRel
+from django.apps import apps
 from django.core.exceptions import ValidationError
+from django.db.models.fields.related import ManyToOneRel
 from django.forms import widgets
 from django.forms.fields import Field, CharField, ChoiceField, BooleanField, MultiValueField
 from django.forms.utils import ErrorList
@@ -14,8 +15,12 @@ from django.utils.translation import ugettext_lazy as _, ugettext
 from cmsplugin_cascade import app_settings
 from cmsplugin_cascade.widgets import ColorPickerWidget, BorderChoiceWidget, MultipleTextInputWidget
 from filer.fields.image import FilerImageField, AdminImageFormField
-from filer.models.imagemodels import Image
+from filer.settings import settings as filer_settings
 
+from entangled.fields import EntangledBoundField
+from entangled.fields import EntangledFormField
+from django.utils.html import mark_safe
+from django.template import loader
 
 class GlossaryField(object):
     """
@@ -280,8 +285,42 @@ class HiddenDictField(Field):
 
 class CascadeImageField(AdminImageFormField):
     def __init__(self, *args, **kwargs):
+        model_name_tuple = filer_settings.FILER_IMAGE_MODEL.split('.')
+        Image = apps.get_model(*model_name_tuple, require_ready=False)
         kwargs.setdefault('label', _("Image"))
         super().__init__(
             ManyToOneRel(FilerImageField, Image, 'file_ptr'),
             Image.objects.all(),
             'image_file', *args, **kwargs)
+
+
+class CascadeEntangledBoundField(EntangledBoundField):
+    """
+    Label not needed in this container boundfields and it are replaced by container title,
+     how describe nested boudfields and also possible adding input helper collapse in container title.
+    """
+    label='' #prevent tag and title label classical
+    auto_id=False # prevent tag label classical
+    template_name='cascade/admin/widgets/boundfield_as_widget.html'
+    def as_widget(self, widget=None, attrs=None, only_initial=True ):
+
+        output_widgets=EntangledBoundField.as_widget(self)
+        
+        context ={
+        "help_text": mark_safe(self.widget._entangled_form.help_text),
+        'output_widgets':mark_safe('\n'.join(output_widgets)),
+        'title_label':self.widget._entangled_form.name
+        }
+        template = loader.get_template(self.template_name).render(context)
+        return mark_safe(template)
+
+
+class CascadeEntangledFormField(EntangledFormField ):
+    _html_output_kwargs= dict(   normal_row='<li%(html_class_attr)s>%(errors)s%(label)s %(field)s%(help_text)s</li>',
+            error_row='<li>%s</li>',
+            row_ender='</li>',
+            help_text_html=' <span class="helptext">%s</span>',
+            errors_on_separate_row=False)
+
+    def get_bound_field(self, form, field_name):
+        return CascadeEntangledBoundField(form, self, field_name)

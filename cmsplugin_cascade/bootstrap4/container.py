@@ -7,10 +7,12 @@ from django.utils.safestring import mark_safe
 from django.utils.text import format_lazy
 from django.utils.translation import ungettext_lazy, ugettext_lazy as _
 from cms.plugin_pool import plugin_pool
-from entangled.forms import EntangledModelFormMixin
+from entangled.forms import EntangledForm, EntangledModelFormMixin
 from cmsplugin_cascade import app_settings
 from cmsplugin_cascade.bootstrap4.grid import Breakpoint
 from cmsplugin_cascade.forms import ManageChildrenFormMixin
+from cmsplugin_cascade.fields import CascadeEntangledFormField
+from cmsplugin_cascade.widgets import SelectListWidget
 from .plugin_base import BootstrapPluginBase
 from . import grid
 
@@ -185,6 +187,12 @@ class BootstrapColumnPlugin(BootstrapPluginBase):
     default_css_attributes = [fmt.format(bp.name) for bp in grid.Breakpoint
         for fmt in ('{}-column-width', '{}-column-offset', '{}-column-ordering', '{}-responsive-utils')]
     model_mixins = (ColumnGridMixin,)
+    #ring_plugin ='ColumnPlugin'
+
+    class Media:
+       # css = {'all': ['node_modules/vanilla-js-dropdown/vanilla-js-dropdown.css' ]}
+       # js = ['admin/js/jquery.init.js', 'node_modules/vanilla-js-dropdown/src/vanilla-js-dropdown.js', 'cascade/js/admin/columnplugin.js']
+        pass
 
     def get_form(self, request, obj=None, **kwargs):
         def choose_help_text(*phrases):
@@ -234,6 +242,7 @@ class BootstrapColumnPlugin(BootstrapPluginBase):
                     choices=choices,
                     label=_("Column width for {}").format(devices),
                     initial='col-{}-12'.format(bp),
+                    widget=SelectListWidget (choices=get_widget_choices()),
                     help_text=choose_help_text(
                         _("Column width for devices narrower than {:.1f} pixels."),
                         _("Column width for devices wider than {:.1f} pixels."),
@@ -249,6 +258,7 @@ class BootstrapColumnPlugin(BootstrapPluginBase):
                     label=_("Column width for {}").format(devices),
                     initial='',
                     required=False,
+                    widget=SelectListWidget(choices=get_widget_choices()),
                     help_text=choose_help_text(
                         _("Override column width for devices narrower than {:.1f} pixels."),
                         _("Override column width for devices wider than {:.1f} pixels."),
@@ -281,6 +291,7 @@ class BootstrapColumnPlugin(BootstrapPluginBase):
                 label=label,
                 required=False,
                 help_text=help_text,
+                widget=SelectListWidget(choices=choices),
             )
 
             # handle column reordering
@@ -301,6 +312,7 @@ class BootstrapColumnPlugin(BootstrapPluginBase):
                 label=label,
                 required=False,
                 help_text=help_text,
+                widget=SelectListWidget(choices=choices),
             )
 
             # handle responsive utilities
@@ -316,19 +328,27 @@ class BootstrapColumnPlugin(BootstrapPluginBase):
                 choices=choices,
                 label=label,
                 initial='',
-                widget=widgets.RadioSelect,
+                  widget=SelectListWidget(choices=choices),
                 required=False,
                 help_text=help_text,
             )
-        glossary_fields = list(width_fields.keys())
-        glossary_fields.extend(offset_fields.keys())
-        glossary_fields.extend(reorder_fields.keys())
-        glossary_fields.extend(responsive_fields.keys())
+
+        form_width_fields = type('WidthColumnForm', (EntangledForm,), dict(width_fields))
+        form_offset_fields = type('OffsetFieldsForm', (EntangledForm,), dict(offset_fields))
+        form_reorder_fields = type('ReorderFieldsForm', (EntangledForm,), dict(reorder_fields))
+        form_responsive_fields = type('ResponsiveFieldsForm', (EntangledForm,), dict(responsive_fields))
+
+        _width_fields = CascadeEntangledFormField( form_width_fields)
+        _offset_fields = CascadeEntangledFormField( form_offset_fields)
+        _reorder_fields = CascadeEntangledFormField( form_reorder_fields)
+        _responsive_fields = CascadeEntangledFormField( form_responsive_fields)
+
 
         class Meta:
-            entangled_fields = {'glossary': glossary_fields}
+            entangled_fields = {'glossary': ['_width_fields', '_offset_fields', '_reorder_fields', '_responsive_fields'] }
 
-        attrs = dict(width_fields, **offset_fields, **reorder_fields, **responsive_fields, Meta=Meta)
+        attrs = dict(_width_fields=_width_fields, _offset_fields=_offset_fields, \
+                     _reorder_fields =_reorder_fields , _responsive_fields=_responsive_fields, Meta=Meta)
         kwargs['form'] = type('ColumnForm', (EntangledModelFormMixin,), attrs)
         return super().get_form(request, obj, **kwargs)
 

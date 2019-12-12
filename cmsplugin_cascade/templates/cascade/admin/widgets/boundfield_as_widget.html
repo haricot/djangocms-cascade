@@ -1,0 +1,13 @@
+{% load i18n %} 
+<div class="container-title"> 
+    <div class="help_input">
+        <b>{{title_label}}</b>
+        <i class=icon-{{title_label}}-title></i>
+    </div>
+</div>
+<div class="container-nested">
+     <ul class="cascade-horizontal">{{output_widgets}}</ul>
+</div>
+<div class="collapse">
+    {{help_text}}
+<div>

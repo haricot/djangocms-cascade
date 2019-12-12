@@ -257,3 +257,8 @@ class BorderChoiceWidget(AColorPickerMixin, widgets.MultiWidget):
         values[3] = self.rgb2hex(values[2])
         context = super().get_context(name, values, attrs)
         return context
+
+
+class SelectListWidget(widgets.Select):
+    #template_name = 'cascade/admin/widgets/select_list_input.html'
+    pass
