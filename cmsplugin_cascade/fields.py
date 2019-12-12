@@ -17,8 +17,8 @@ from cmsplugin_cascade.widgets import ColorPickerWidget, BorderChoiceWidget, Mul
 from filer.fields.image import FilerImageField, AdminImageFormField
 from filer.settings import settings as filer_settings
 
-from entangled.fields import EntangledBoundField
-from entangled.fields import EntangledFormField
+from entangled.fields import EntangledBoundField, EntangledFormField
+from entangled.widgets import EntangledFormWidget
 from django.utils.html import mark_safe
 from django.template import loader
 
@@ -299,16 +299,21 @@ class CascadeEntangledBoundField(EntangledBoundField):
     Label not needed in this container boundfields and it are replaced by container title,
      how describe nested boudfields and also possible adding input helper collapse in container title.
     """
-    label='' #prevent tag and title label classical
-    auto_id=False # prevent tag label classical
-    template_name='cascade/admin/widgets/boundfield_as_widget.html'
+    label = '' #prevent tag and title label
+    auto_id = False # prevent tag label
+    template_name = 'cascade/admin/widgets/boundfield_as_widget.html'
+    
+    def __init__(self, *args,**kwargs):
+        self.widget = EntangledFormWidget(self)
+        super().__init__(*args,**kwargs)
+        
     def as_widget(self, widget=None, attrs=None, only_initial=True ):
 
         output_widgets=EntangledBoundField.as_widget(self)
         
         context ={
         "help_text": mark_safe(self.widget._entangled_form.help_text),
-        'output_widgets':mark_safe('\n'.join(output_widgets)),
+        'output_widgets':output_widgets,
         'title_label':self.widget._entangled_form.name
         }
         template = loader.get_template(self.template_name).render(context)
