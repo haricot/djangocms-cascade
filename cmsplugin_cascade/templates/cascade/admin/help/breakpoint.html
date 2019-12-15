@@ -1,0 +1,40 @@
+{% spaceless %}
+{# wip #}
+<style>
+.cascade-horizontal{
+margin:0px !important;
+}
+.help {
+margin:0px !important;
+}
+</style>
+ 
+{% if column_fields_widgets %}
+<div><i class="icon-xl"></i><b>col</b> Help text Flex col</div>
+<div><i class="icon-xl"></i><b>col-auto</b> Help text Auto col</div>
+<div><i class="icon-xl"></i><b>inherit</b> Help text inherit </div>
+<div><i class="icon-xl"></i><b>col Unit</b> Help text Unit </div>
+<br>
+{% include "cascade/admin/help/grid-system.html" %}
+{% endif %}
+
+{% if offset_fields_widgets %}
+<h3>Offsetting columns</h3><br>
+<p>You can offset grid columns in two ways: our responsive .offset- grid classes and our margin utilities. Grid classes are sized to match columns while margins are more useful for quick layouts where the width of the offset is variable.</p>
+<h3>Offset classes: </h3><br>
+<p>Move columns to the right using .offset-md-* classes. These classes increase the left margin of a column by * columns. For example, .offset-md-4 moves .col-md-4 over four columns.</p>
+{% include "cascade/admin/help/grid-system.html" %}
+{% endif %}
+
+{% if reorder_fields_widgets %}
+<h3>Order classes</h3><br>
+<p>Use .order- classes for controlling the visual order of your content. These classes are responsive, so you can set the order by breakpoint (e.g., .order-1.order-md-2). Includes support for 1 through 12 across all five grid tiers.</p>
+{% endif %}
+
+{% if responsive_fields_widgets %}
+<h3>Hiding elements</h3><br>
+changed in bootstrap 4.4
+{% endif %}
+
+<p>* Ref: Bootstrap 4 official documentation. </p>
+{% endspaceless %}

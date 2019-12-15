@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.forms import widgets
 from django.forms.fields import BooleanField, ChoiceField, MultipleChoiceField
+from django.template.loader import get_template
 from django.utils.safestring import mark_safe
 from django.utils.text import format_lazy
 from django.utils.translation import ungettext_lazy, ugettext_lazy as _
@@ -187,12 +188,8 @@ class BootstrapColumnPlugin(BootstrapPluginBase):
     default_css_attributes = [fmt.format(bp.name) for bp in grid.Breakpoint
         for fmt in ('{}-column-width', '{}-column-offset', '{}-column-ordering', '{}-responsive-utils')]
     model_mixins = (ColumnGridMixin,)
-    #ring_plugin ='ColumnPlugin'
+    template_name_help = "cascade/admin/help/breakpoint.html"
 
-    class Media:
-       # css = {'all': ['node_modules/vanilla-js-dropdown/vanilla-js-dropdown.css' ]}
-       # js = ['admin/js/jquery.init.js', 'node_modules/vanilla-js-dropdown/src/vanilla-js-dropdown.js', 'cascade/js/admin/columnplugin.js']
-        pass
 
     def get_form(self, request, obj=None, **kwargs):
         def choose_help_text(*phrases):
@@ -333,16 +330,26 @@ class BootstrapColumnPlugin(BootstrapPluginBase):
                 help_text=help_text,
             )
 
-        form_width_fields = type('WidthColumnForm', (EntangledForm,), dict(width_fields))
-        form_offset_fields = type('OffsetFieldsForm', (EntangledForm,), dict(offset_fields))
-        form_reorder_fields = type('ReorderFieldsForm', (EntangledForm,), dict(reorder_fields))
-        form_responsive_fields = type('ResponsiveFieldsForm', (EntangledForm,), dict(responsive_fields))
+        form_width_fields = type('WidthColumnForm', (EntangledForm,),\
+         dict(width_fields, title="Column", icon="icon-colum-title"))
+        form_offset_fields = type('OffsetFieldsForm', (EntangledForm,),\
+         dict(offset_fields, title="Offset", icon="icon-offset-title"))
+        form_reorder_fields = type('ReorderFieldsForm', (EntangledForm,),\
+         dict(reorder_fields, title="Reorder", icon="icon-reorder-title"))
+        form_responsive_fields = type('ResponsiveFieldsForm', (EntangledForm,),\
+         dict(responsive_fields, title="Responsive", icon="icon-responsive-title"))
 
-        _width_fields = CascadeEntangledFormField( form_width_fields)
-        _offset_fields = CascadeEntangledFormField( form_offset_fields)
-        _reorder_fields = CascadeEntangledFormField( form_reorder_fields)
-        _responsive_fields = CascadeEntangledFormField( form_responsive_fields)
-
+        template_name_help = get_template(self.template_name_help)
+        
+        width_fields_help_text =  template_name_help.render({'column_fields_widgets':True})
+        offset_fields_help_text  = template_name_help.render({'offset_fields_widgets':True})
+        reorder_fields_help_text  = template_name_help.render({'reorder_fields_widgets':True})
+        responsive_fields_help_text  = template_name_help.render({'responsive_fields_widgets':True})
+        
+        _width_fields = CascadeEntangledFormField( form_width_fields, help_text=width_fields_help_text)
+        _offset_fields = CascadeEntangledFormField( form_offset_fields, help_text=offset_fields_help_text)
+        _reorder_fields = CascadeEntangledFormField( form_reorder_fields, help_text=reorder_fields_help_text)
+        _responsive_fields = CascadeEntangledFormField( form_responsive_fields, help_text=responsive_fields_help_text)
 
         class Meta:
             entangled_fields = {'glossary': ['_width_fields', '_offset_fields', '_reorder_fields', '_responsive_fields'] }

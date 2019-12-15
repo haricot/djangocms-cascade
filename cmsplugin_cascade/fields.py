@@ -297,7 +297,7 @@ class CascadeImageField(AdminImageFormField):
 class CascadeEntangledBoundField(EntangledBoundField):
     """
     Label not needed in this container boundfields and it are replaced by container title,
-     how describe nested boudfields and also possible adding input helper collapse in container title.
+    container title describe nested boudfields and this can add compatiblity add  adding input helper collapse in container title.
     """
     label = '' #prevent tag and title label
     auto_id = False # prevent tag label
@@ -310,7 +310,7 @@ class CascadeEntangledBoundField(EntangledBoundField):
         self.widget = EntangledFormWidget(self)
         super().__init__(*args,**kwargs)
         
-    def as_widget(self, widget=None, attrs=None, only_initial=True):
+    def as_widget(self, widget=None, attrs=None, only_initial=True):    
         output_widgets=EntangledBoundField.as_widget(self)
         context ={
         "help_text": mark_safe(self.widget._entangled_form.help_text),
