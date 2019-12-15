@@ -56,7 +56,11 @@ def set_defaults(config):
     config['plugins_with_extra_mixins'].setdefault('HorizontalRulePlugin', BootstrapUtilities(
         BootstrapUtilities.margins,
     ))
+    config['plugins_with_extra_mixins'].setdefault('BootstrapColumnPlugin', BootstrapUtilities(
+        BootstrapUtilities.background_and_color,
 
+      BootstrapUtilities.floats,BootstrapUtilities.vertical_margins,BootstrapUtilities.paddings, BootstrapUtilities.margins,
+    ))
     config['plugins_with_extra_fields'].setdefault('BootstrapTabSetPlugin', PluginExtraFieldsConfig(
         css_classes={
             'multiple': True,

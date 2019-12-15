@@ -7,6 +7,7 @@ import sys
 from django.urls import reverse_lazy
 
 from cmsplugin_cascade.extra_fields.config import PluginExtraFieldsConfig
+from cmsplugin_cascade.bootstrap4.mixins import BootstrapUtilities
 from django.utils.text import format_lazy
 
 DEBUG = True
@@ -223,6 +224,28 @@ CMSPLUGIN_CASCADE = {
     'allow_plugin_hiding': True,
     'leaflet': {'default_position': {'lat': 50.0, 'lng': 12.0, 'zoom': 6}},
     'cache_strides': True,
+
+    'plugins_with_extra_mixins': {
+     # issue with nested entangled: traduction lazy work in app_settings but not in settings.py.
+     #The translation infrastructure cannot be initialized before the apps registry is ready. Check that you don't make non-lazy gettext calls at import time.
+     #'BootstrapColumnPlugin': BootstrapUtilities( BootstrapUtilities.background_and_color, BootstrapUtilities.floats, BootstrapUtilities.vertical_margins, BootstrapUtilities.paddings, BootstrapUtilities.margins,)
+
+    },
+    'plugins_with_extra_fields': {
+    'BootstrapColumnPlugin': PluginExtraFieldsConfig(
+        css_classes={'multiple': True, 'class_names': 'custom-zoom-over, custom-zoom-over2'},
+        inline_styles={
+            'extra_fields:Border': ['border',],
+            'extra_fields:Border Radius': ['border-radius'],
+            'extra_units:Border Radius': 'px,rem',
+            'extra_fields:Colors': ['color', 'background-color'],
+            'extra_fields:Margins': ['margin-top', 'margin-right', 'margin-botton,', 'margin-left'],
+            'extra_units:Margins': 'px,em',
+            'extra_fields:Paddings': ['padding-top', 'padding-right', 'padding-botton,', 'padding-left'],
+            'extra_units:Paddings': 'px,em',
+        }),
+    }
+
 }
 
 CMS_PLACEHOLDER_CONF = {
@@ -238,6 +261,7 @@ CMS_PLACEHOLDER_CONF = {
         'plugins': ['BootstrapRowPlugin', 'TextPlugin', ],
         'parent_classes': {'BootstrapRowPlugin': None},
         'require_parent': False,
+        
     },
 }
 

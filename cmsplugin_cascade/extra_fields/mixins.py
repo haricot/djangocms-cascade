@@ -5,7 +5,7 @@ from django.forms.fields import CharField, ChoiceField, MultipleChoiceField
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 from entangled.forms import EntangledForm, EntangledModelFormMixin
-from cmsplugin_cascade.fields import CascadeEntangledFormField
+from cmsplugin_cascade._fields import CascadeEntangledFormField
 from cmsplugin_cascade import app_settings
 from cmsplugin_cascade.fields import SizeField
 
@@ -100,7 +100,7 @@ class ExtraFieldsMixin(metaclass=MediaDefiningClass):
 
             nested_form_fields={}
             for key, items in forms.items():
-                nested_form_fields[key] = CascadeEntangledFormField( items)
+                nested_form_fields[key] = CascadeEntangledFormField(items)
 
             # extend the form with some extra fields
             base_form = kwargs.pop('form', self.form)
