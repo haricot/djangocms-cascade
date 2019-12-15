@@ -4,7 +4,8 @@ from django.forms import MediaDefiningClass, widgets
 from django.forms.fields import CharField, ChoiceField, MultipleChoiceField
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
-from entangled.forms import EntangledModelFormMixin
+from entangled.forms import EntangledForm, EntangledModelFormMixin
+from cmsplugin_cascade.fields import CascadeEntangledFormField
 from cmsplugin_cascade import app_settings
 from cmsplugin_cascade.fields import SizeField
 
@@ -32,12 +33,16 @@ class ExtraFieldsMixin(metaclass=MediaDefiningClass):
 
         if isinstance(extra_fields, (PluginExtraFields, PluginExtraFieldsConfig)):
             form_fields = {}
+            form_base_fields = {}
 
             # add a text input field to let the user name an ID tag for this HTML element
             if extra_fields.allow_id_tag:
                 form_fields['extra_element_id'] = CharField(
                     label=_("Named Element ID"),
                 )
+                if not 'extra_element_id' in form_base_fields.keys():
+                    form_base_fields['extra_element_id']= {}
+                form_base_fields['extra_element_id'].update( {'extra_element_id':form_fields['extra_element_id'] })
 
             # add a select box to let the user choose one or more CSS classes
             class_names, choices = extra_fields.css_classes.get('class_names'), None
@@ -63,6 +68,10 @@ class ExtraFieldsMixin(metaclass=MediaDefiningClass):
                         help_text=_("Customized CSS class to be added to this element."),
                     )
 
+                if not 'extra_css_classes' in form_base_fields.keys():
+                    form_base_fields['extra_css_classes'] = {}
+                form_base_fields['extra_css_classes'].update( {'extra_css_classes':form_fields['extra_css_classes'] })
+
             # add input fields to let the user enter styling information
             for style, choices_list in app_settings.CMSPLUGIN_CASCADE['extra_inline_styles'].items():
                 inline_styles = extra_fields.inline_styles.get('extra_fields:{0}'.format(style))
@@ -79,13 +88,28 @@ class ExtraFieldsMixin(metaclass=MediaDefiningClass):
                         field_kwargs['allowed_units'] = extra_fields.inline_styles.get('extra_units:{0}'.format(style)).split(',')
                     form_fields[key] = Field(**field_kwargs)
 
+                    if not field_kwargs['label'].split(': ')[0].lower() in form_base_fields.keys():
+                        form_base_fields[field_kwargs['label'].split(': ')[0].lower()] = {}
+                    form_base_fields[field_kwargs['label'].split(': ')[0].lower()].update( {key:Field(**field_kwargs)})
+
+            forms={}
+            for key , items_fields in form_base_fields.items():
+                form_name = "{}CustomForm".format( key )
+                form_title = "{} custom".format( key )
+                forms[key] = type(form_name, (EntangledForm,), dict(items_fields, title=form_title))
+
+            nested_form_fields={}
+            for key, items in forms.items():
+                nested_form_fields[key] = CascadeEntangledFormField( items)
+
             # extend the form with some extra fields
             base_form = kwargs.pop('form', self.form)
             assert issubclass(base_form, EntangledModelFormMixin), "Form must inherit from EntangledModelFormMixin"
             class Meta:
-                entangled_fields = {'glossary': list(form_fields.keys())}
-            form_fields['Meta'] = Meta
-            kwargs['form'] = type(base_form.__name__, (base_form,), form_fields)
+                entangled_fields = {'glossary': list(nested_form_fields.keys())}
+
+            nested_form_fields['Meta'] = Meta
+            kwargs['form'] = type(base_form.__name__, (base_form,), nested_form_fields) 
         return super().get_form(request, obj, **kwargs)
 
     @classmethod
