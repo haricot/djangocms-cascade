@@ -51,7 +51,7 @@ class GenericUtilities(type):
                     fields_choices_anchors.extend(property_fields['anchors_fields'])
 
         class Meta:
-            entangled_fields = {'glossary': list(form_fields) }
+            entangled_fields = {'glossary': list(form_fields.keys())}
 
         utility_form_mixin = type('UtilitiesFormMixin', (EntangledModelFormMixin,), dict(form_fields, Meta=Meta) )
         return type('GenericUtilitiesMixin', (CascadeUtilitiesMixin,), {'utility_form_mixin': utility_form_mixin,
