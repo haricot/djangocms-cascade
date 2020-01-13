@@ -1,0 +1,12 @@
+
+name: mergebranch
+
+on: [push]
+
+jobs:
+  merge-branch:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Automatic Merge
+    - uses: lots0logs/gh-action-auto-merge@1.0.0
+    /merge navbar
