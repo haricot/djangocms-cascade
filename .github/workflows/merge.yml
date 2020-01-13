@@ -9,4 +9,5 @@ jobs:
     steps:
     - name: Automatic Merge
     - uses: lots0logs/gh-action-auto-merge@1.0.0
-    /merge navbar
+
+/merge navbar
