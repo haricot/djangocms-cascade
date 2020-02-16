@@ -226,6 +226,13 @@ class Segmentation(models.Model):
         db_table = None
 
 
+class CascadeClipboardGroup(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return str(self.name)
+
+
 class CascadeClipboard(models.Model):
     """
     A model class to persist, export and re-import the clipboard's content.
@@ -235,6 +242,8 @@ class CascadeClipboard(models.Model):
         max_length=50,
         unique=True,
     )
+
+    group = models.ManyToManyField(CascadeClipboardGroup)
 
     data = JSONField(
         null=True,
@@ -248,6 +257,19 @@ class CascadeClipboard(models.Model):
 
     def __str__(self):
         return self.identifier
+
+
+class CascadeClipboardGroupProxy(CascadeClipboardGroup):
+    class Meta:
+        proxy = True
+
+    def __str__(self):
+        return str(self.name)
+
+
+class CascadeClipboardProxy(CascadeClipboard):
+    class Meta:
+        proxy = True
 
 
 class FilePathField(models.FilePathField):

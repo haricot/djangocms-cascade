@@ -1,5 +1,5 @@
 import json
-
+from django.contrib import admin
 from django.conf.urls import url
 from django.contrib.admin import site as default_admin_site
 from django.contrib.admin.helpers import AdminForm
@@ -17,8 +17,20 @@ from cms.toolbar.utils import get_plugin_tree_as_json
 from cms.utils import get_language_from_request
 from cmsplugin_cascade.clipboard.forms import ClipboardBaseForm
 from cmsplugin_cascade.clipboard.utils import deserialize_to_clipboard, serialize_from_placeholder
-from cmsplugin_cascade.models import CascadeClipboard
+from cmsplugin_cascade.models import CascadeClipboard, CascadeClipboardGroup
+from cmsplugin_cascade.clipboard.forms import ClipboardBaseForm
 
+
+class GroupInline2(admin.TabularInline):
+    model = CascadeClipboard.group.through
+    extra = 1
+    max_num = 2
+
+ 
+from django.forms.models import (
+    BaseInlineFormSet, inlineformset_factory, modelform_defines_fields,
+    modelform_factory, modelformset_factory,
+)
 
 class CascadeClipboardPlugin(CMSPluginBase):
     system = True
@@ -41,11 +53,11 @@ class CascadeClipboardPlugin(CMSPluginBase):
         return [
             PluginMenuItem(
                 _("Export to Clipboard"),
-                reverse('admin:export_clipboard_plugins') + '?' + data,
+                reverse('admin:cmsplugin_cascade_cascadeclipboardproxy_add') + '?' + data,
                 data={},
                 action='modal',
                 attributes={
-                    'icon': 'export',
+                    'icon': 'import',
                 },
             ),
             PluginMenuItem(
@@ -56,7 +68,7 @@ class CascadeClipboardPlugin(CMSPluginBase):
                 attributes={
                     'icon': 'import',
                 },
-            )
+            ),
         ]
 
     def render_modal_window(self, request, form):
@@ -66,6 +78,13 @@ class CascadeClipboardPlugin(CMSPluginBase):
         opts = self.model._meta
         fieldsets = [(None, {'fields': list(form.fields)})]
         adminForm = AdminForm(form, fieldsets, {}, [])
+        form.__name__='truc'
+        form.opts= opts
+        form.opts.model_name= 'oij'
+        # essai avec inline_admin_formsets 
+        #  formsets = formset_factory(form)
+        #FormSet= inlineformset_factory(CascadeClipboard,CascadeClipboardGroup,  fields=('group',))
+        #self.get_inline_formsets(, request, formsets, inline_instances)
         context = {
             **default_admin_site.each_context(request),
             'title': form.title,
@@ -80,6 +99,7 @@ class CascadeClipboardPlugin(CMSPluginBase):
             'is_popup': True,
             'app_label': opts.app_label,
             'media': self.media + form.media,
+            #  'inline_admin_formsets':  [ FormSet],
         }
         return TemplateResponse(request, self.change_form_template, context)
 
@@ -151,6 +171,11 @@ class CascadeClipboardPlugin(CMSPluginBase):
             Form = type('ClipboardExportForm', (ClipboardBaseForm,), {
                 'identifier': CharField(required=False),
                 'title': title,
+                'group':ModelChoiceField(
+                    queryset=CascadeClipboardGroup.objects.all(),
+                    label=_("Select Clipboard Group"),
+                    required=False,
+                ),
             })
             form = Form(request.GET)
             assert form.is_valid()
@@ -158,6 +183,11 @@ class CascadeClipboardPlugin(CMSPluginBase):
             Form = type('ClipboardExportForm', (ClipboardBaseForm,), {
                 'identifier': CharField(),
                 'title': title,
+                 'group':ModelChoiceField(
+                    queryset=CascadeClipboardGroup.objects.all(),
+                    label=_("Select Clipboard Group"),
+                    required=False,
+                ),
             })
             form = Form(request.POST)
             if form.is_valid():
