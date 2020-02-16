@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib import messages
 from django.contrib.admin.templatetags.admin_static import static
-from django.forms import widgets
+from django.forms import widgets, CharField
 from django.forms.utils import flatatt
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
@@ -10,8 +10,9 @@ from jsonfield.fields import JSONField
 
 from cms.models.placeholderpluginmodel import PlaceholderReference
 from cmsplugin_cascade.clipboard.utils import deserialize_to_clipboard, serialize_from_placeholder
-from cmsplugin_cascade.models import CascadeClipboard
-
+from cmsplugin_cascade.models import CascadeClipboard, CascadeClipboardGroup,CascadeClipboardProxy, CascadeClipboardGroupProxy
+from cms.admin.placeholderadmin import PlaceholderAdminMixin
+from cmsplugin_cascade.clipboard.forms import ClipboardBaseForm
 
 class JSONAdminWidget(widgets.Textarea):
     def __init__(self):
@@ -36,6 +37,16 @@ class JSONAdminWidget(widgets.Textarea):
             _("Successfully copied JSON data"))
 
 
+class GroupInline(admin.TabularInline):
+    model = CascadeClipboard.group.through
+    extra = 1
+    max_num = 2
+
+
+@admin.register(CascadeClipboardGroup)
+class GroupModelAdmin(PlaceholderAdminMixin, admin.ModelAdmin):
+    pass
+
 @admin.register(CascadeClipboard)
 class CascadeClipboardAdmin(admin.ModelAdmin):
     fields = ('identifier', 'save_clipboard', 'restore_clipboard', 'data',)
@@ -43,6 +54,8 @@ class CascadeClipboardAdmin(admin.ModelAdmin):
     formfield_overrides = {
         JSONField: {'widget': JSONAdminWidget},
     }
+    change_form_template = 'cascade/admin/clipboard_change_form.html'
+    inlines = [GroupInline]
 
     class Media:
         css = {'all': ['cascade/css/admin/clipboard.css']}
@@ -74,3 +87,40 @@ class CascadeClipboardAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
         if request.POST.get('restore_clipboard'):
             deserialize_to_clipboard(request, obj.data)
+
+
+@admin.register(CascadeClipboardProxy)
+class CascadeClipboardAdmin2(admin.ModelAdmin):
+    fields = ('identifier',)
+    inlines = [GroupInline]
+    change_form_template = 'cascade/admin/clipboard_change_form.html'
+    formfield_overrides = {
+        JSONField: {'widget': JSONAdminWidget},
+    }
+
+    def add_to_clipboard(self, request, form):
+        placeholder = form.cleaned_data['placeholder']
+        language = form.cleaned_data['language']
+        identifier = form.cleaned_data['identifier']
+        group = form.cleaned_data['group']
+        data = serialize_from_placeholder(placeholder)
+        CascadeClipboard.objects.create(
+            identifier=identifier,
+            group=group,
+            data=data,
+        )
+
+    def save_model(self, request, obj, form, change):
+        placeholder_reference = PlaceholderReference.objects.last()
+        if placeholder_reference:
+            placeholder = placeholder_reference.placeholder_ref
+            obj.data = serialize_from_placeholder(placeholder, self.admin_site)
+        request.POST = request.POST.copy()
+        request.POST['_continue'] = True
+        super().save_model(request, obj, form, change)
+        Form = type('ClipboardImportForm', (ClipboardBaseForm,), {
+                        'identifier': CharField(),
+        })
+        form = Form(request.GET)
+        if form.is_valid():
+            return self.add_to_clipboard(request, form)
