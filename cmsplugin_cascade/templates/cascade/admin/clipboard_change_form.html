@@ -1,0 +1,15 @@
+{% extends "admin/cms/usersettings/change_form.html" %}
+{% load admin_static admin_urls i18n cascade_tags sekizai_tags %}
+
+{% render_block "css"  %}
+{% render_block "js"  %}
+
+{% block field_sets %}
+	{% block css %}
+		{{ block.super }}
+	{% endblock %}
+	{% block js %}
+		{{ block.super }}
+	{% endblock %}
+	{{ block.super }}
+{% endblock %}
