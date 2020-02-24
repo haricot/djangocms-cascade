@@ -82,7 +82,6 @@ class CascadeClipboardPlugin(CMSPluginBase):
         opts = self.model._meta
         fieldsets = [(None, {'fields': list(form.fields)})]
         adminForm = AdminForm(form, fieldsets, {}, [])
-
         context = {
             **default_admin_site.each_context(request),
             'title': form.title,
@@ -102,7 +101,6 @@ class CascadeClipboardPlugin(CMSPluginBase):
         }
 
         return TemplateResponse(request, self.change_form_template, context)
-
 
     def import_plugins_view(self, request, *args, **kwargs):
         # TODO: check for permissions
@@ -169,7 +167,7 @@ class CascadeClipboardPlugin(CMSPluginBase):
                 'title': title,
             })
 
-            Form.Media =type("Media",(), {'css'  : { 'all': ['cascade/css/admin/clipboard.css'] }}) 
+            Form.Media = type("Media",(), {'css'  : { 'all': ['cascade/css/admin/clipboard.css'] }}) 
             form = Form(request.GET)
             assert form.is_valid()
         elif request.method == 'POST':

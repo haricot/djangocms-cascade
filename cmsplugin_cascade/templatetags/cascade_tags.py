@@ -22,8 +22,9 @@ class StrideRenderer(Tag):
     {% render_cascade "cascade-data.json" %}
 
     Keyword arguments:
-    datafile -- Filename containing the cascade tree. Must be file locatable by Django's
+    data_clipboard -- Filename containing the cascade tree. Must be file locatable by Django's
     static file finders.
+    identifier --- Identifier persitent clipboard db.
     """
     name = 'render_cascade'
     options = Options(
@@ -88,7 +89,7 @@ class RenderPlugin(Tag):
         Argument('plugin')
     )
 
-    def render_tag(self, context, plugin):
+    def render_tag(self, context, plugin, request=None):
         if not plugin:
             return ''
         if 'cms_content_renderer' in context and isinstance(context['cms_content_renderer'], StrideContentRenderer):
