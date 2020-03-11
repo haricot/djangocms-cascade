@@ -15,12 +15,12 @@ python-versions = "*"
 version = "3.0.4"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "A high-level Python Web framework that encourages rapid development and clean, pragmatic design."
 name = "django"
 optional = false
 python-versions = ">=3.5"
-version = "2.2.10"
+version = "2.2.11"
 
 [package.dependencies]
 pytz = "*"
@@ -36,7 +36,7 @@ description = "Generic drag-and-drop sorting for the List, the Stacked- and the 
 name = "django-admin-sortable2"
 optional = false
 python-versions = "*"
-version = "0.7.5"
+version = "0.7.6"
 
 [package.dependencies]
 Django = ">=1.8,<3.1"
@@ -117,20 +117,25 @@ python-versions = "*"
 version = "0.3"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "A file management application for django that makes handling of files and images a breeze."
 name = "django-filer"
 optional = false
 python-versions = "*"
-version = "1.6.0"
+version = "1.7.0"
 
 [package.dependencies]
-Unidecode = ">=0.04,<1.1"
-django = ">=1.11,<3.0"
+Unidecode = ">=0.04,<1.2"
+django = ">=1.11,<4.0"
 django-mptt = ">=0.6,<1.0"
-django_polymorphic = ">=0.7,<2.1"
+django_polymorphic = ">=0.7,<2.2"
 easy-thumbnails = ">=2,<3.0"
+six = "*"
 
+[package.source]
+reference = "d290e606d7a582c77b54d740c22a0221412c4015"
+type = "git"
+url = "https://github.com/haricot/django-filer.git"
 [[package]]
 category = "dev"
 description = "A set of high-level abstractions for Django forms"
@@ -143,7 +148,7 @@ version = "2.2"
 Django = ">=1.11"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "script tag with additional attributes for django.forms.Media"
 name = "django-js-asset"
 optional = false
@@ -151,7 +156,7 @@ python-versions = "*"
 version = "1.2.2"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Utilities for implementing Modified Preorder Tree Traversal with your Django Models and working with trees of Model instances."
 name = "django-mptt"
 optional = false
@@ -163,12 +168,12 @@ Django = ">=1.11"
 django-js-asset = "*"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Seamless polymorphic inheritance for Django models"
 name = "django-polymorphic"
 optional = false
 python-versions = "*"
-version = "2.0.3"
+version = "2.1.2"
 
 [package.dependencies]
 Django = ">=1.11"
@@ -274,7 +279,7 @@ description = "Text Plugin for django CMS with CKEditor support"
 name = "djangocms-text-ckeditor"
 optional = false
 python-versions = "*"
-version = "3.8.0"
+version = "3.9.0"
 
 [package.dependencies]
 Pillow = "*"
@@ -293,7 +298,7 @@ version = "0.2.0"
 django-cms = ">=3.4.5"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Easy thumbnails for Django"
 name = "easy-thumbnails"
 optional = false
@@ -329,15 +334,15 @@ description = "Internationalized Domain Names in Applications (IDNA)"
 name = "idna"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "2.8"
+version = "2.9"
 
 [[package]]
 category = "dev"
 description = "A reusable Django field that allows you to store validated JSON in your model."
 name = "jsonfield"
 optional = false
-python-versions = "*"
-version = "3.0.0"
+python-versions = ">=3.6"
+version = "3.1.0"
 
 [package.dependencies]
 Django = ">=2.2"
@@ -362,7 +367,7 @@ python-versions = "*"
 version = "0.2.1"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Python Imaging Library (Fork)"
 name = "pillow"
 optional = false
@@ -370,7 +375,7 @@ python-versions = ">=3.5"
 version = "7.0.0"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "World timezone definitions, modern and historical"
 name = "pytz"
 optional = false
@@ -391,16 +396,16 @@ description = "Python HTTP for Humans."
 name = "requests"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "2.22.0"
+version = "2.23.0"
 
 [package.dependencies]
 certifi = ">=2017.4.17"
-chardet = ">=3.0.2,<3.1.0"
-idna = ">=2.5,<2.9"
+chardet = ">=3.0.2,<4"
+idna = ">=2.5,<3"
 urllib3 = ">=1.21.1,<1.25.0 || >1.25.0,<1.25.1 || >1.25.1,<1.26"
 
 [package.extras]
-security = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)"]
+security = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)"]
 socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7)", "win-inet-pton"]
 
 [[package]]
@@ -412,7 +417,7 @@ python-versions = "*"
 version = "1.1.0"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Python 2 and 3 compatibility utilities"
 name = "six"
 optional = false
@@ -420,20 +425,20 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 version = "1.14.0"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Non-validating SQL parser"
 name = "sqlparse"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "0.3.0"
+version = "0.3.1"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "ASCII transliterations of Unicode text"
 name = "unidecode"
 optional = false
-python-versions = "*"
-version = "1.0.23"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "1.1.1"
 
 [[package]]
 category = "dev"
@@ -457,7 +462,7 @@ python-versions = "*"
 version = "0.5.1"
 
 [metadata]
-content-hash = "2115171a195bcabffe11d3f5f9b97eb118bbc02c9c77c45ed3c7c68db1550ff6"
+content-hash = "b9a30f1a7c58b42398dcf587949c52a17dc376ee9da7064238a133599834a61a"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -470,11 +475,11 @@ chardet = [
     {file = "chardet-3.0.4.tar.gz", hash = "sha256:84ab92ed1c4d4f16916e05906b6b75a6c0fb5db821cc65e70cbd64a3e2a5eaae"},
 ]
 django = [
-    {file = "Django-2.2.10-py3-none-any.whl", hash = "sha256:9a4635813e2d498a3c01b10c701fe4a515d76dd290aaa792ccb65ca4ccb6b038"},
-    {file = "Django-2.2.10.tar.gz", hash = "sha256:1226168be1b1c7efd0e66ee79b0e0b58b2caa7ed87717909cd8a57bb13a7079a"},
+    {file = "Django-2.2.11-py3-none-any.whl", hash = "sha256:b51c9c548d5c3b3ccbb133d0bebc992e8ec3f14899bce8936e6fdda6b23a1881"},
+    {file = "Django-2.2.11.tar.gz", hash = "sha256:65e2387e6bde531d3bb803244a2b74e0253550a9612c64a60c8c5be267b30f50"},
 ]
 django-admin-sortable2 = [
-    {file = "django-admin-sortable2-0.7.5.tar.gz", hash = "sha256:1366cb159439aa28472639dc1f33d6370a56d4c3efbe3def854d953aaa6bbd24"},
+    {file = "django-admin-sortable2-0.7.6.tar.gz", hash = "sha256:caf158310cba75888d5e2494f0a7e52b9b43b90d22e12798023bbe8dae51243b"},
 ]
 django-appconf = [
     {file = "django-appconf-1.0.3.tar.gz", hash = "sha256:35f13ca4d567f132b960e2cd4c832c2d03cb6543452d34e29b7ba10371ba80e3"},
@@ -498,9 +503,7 @@ django-dynamic-preferences = [
 django-entangled = [
     {file = "django-entangled-0.3.tar.gz", hash = "sha256:e51cb1748f30d3dc474fd32d195f051307507a3dbbe789f0fed29b80ce2e6a35"},
 ]
-django-filer = [
-    {file = "django-filer-1.6.0.tar.gz", hash = "sha256:3f2045cfd9e53c1a29cd8a71747e984faead630ee72baab29d6b3b45584d52e0"},
-]
+django-filer = []
 django-formtools = [
     {file = "django-formtools-2.2.tar.gz", hash = "sha256:c5272c03c1cd51b2375abf7397a199a3148a9fbbf2f100e186467a84025d13b2"},
     {file = "django_formtools-2.2-py2.py3-none-any.whl", hash = "sha256:304fa777b8ef9e0693ce7833f885cb89ba46b0e46fc23b01176900a93f46742f"},
@@ -514,8 +517,8 @@ django-mptt = [
     {file = "django_mptt-0.11.0-py2.py3-none-any.whl", hash = "sha256:90eb236eb4f1a92124bd7c37852bbe09c0d21158477cc237556d59842a91c509"},
 ]
 django-polymorphic = [
-    {file = "django-polymorphic-2.0.3.tar.gz", hash = "sha256:1fb5505537bcaf71cfc951ff94c4e3ba83c761eaca04b7b2ce9cb63937634ea5"},
-    {file = "django_polymorphic-2.0.3-py2.py3-none-any.whl", hash = "sha256:79e7df455fdc8c3d28d38b7ab8323fc21d109a162b8ca282119e0e9ce8db7bdb"},
+    {file = "django-polymorphic-2.1.2.tar.gz", hash = "sha256:6e08a76c91066635ccb7ef3ebbe9a0ad149febae6b30be2579716ec16d3c6461"},
+    {file = "django_polymorphic-2.1.2-py2.py3-none-any.whl", hash = "sha256:0a25058e95e5e99fe0beeabb8f4734effe242d7b5b77dca416fba9fd3062da6a"},
 ]
 django-sass-processor = [
     {file = "django-sass-processor-0.8.tar.gz", hash = "sha256:e039551994feaaba6fcf880412b25a772dd313162a34cbb4289814988cfae340"},
@@ -543,7 +546,7 @@ djangocms-history = [
     {file = "djangocms-history-1.1.0.tar.gz", hash = "sha256:783c0aea25671e14df634838660e53023d6559c66697c9d8d8cfa771842e9ff2"},
 ]
 djangocms-text-ckeditor = [
-    {file = "djangocms-text-ckeditor-3.8.0.tar.gz", hash = "sha256:0f0291cdf305c469741a639d89c71ee77f29dfc5aada4f7a453d6dc2926ceca9"},
+    {file = "djangocms-text-ckeditor-3.9.0.tar.gz", hash = "sha256:b29197499e0836e7c8726f5598a3d4e7fbdc38638739bdd0f492d03bd96c52ca"},
 ]
 djangocms-transfer = [
     {file = "djangocms-transfer-0.2.0.tar.gz", hash = "sha256:9e7d251a82fa13beb6bf541a157a63b8306a8ae29a90349c783f0077e439f325"},
@@ -556,12 +559,12 @@ html5lib = [
     {file = "html5lib-1.0.1.tar.gz", hash = "sha256:66cb0dcfdbbc4f9c3ba1a63fdb511ffdbd4f513b2b6d81b80cd26ce6b3fb3736"},
 ]
 idna = [
-    {file = "idna-2.8-py2.py3-none-any.whl", hash = "sha256:ea8b7f6188e6fa117537c3df7da9fc686d485087abf6ac197f9c46432f7e4a3c"},
-    {file = "idna-2.8.tar.gz", hash = "sha256:c357b3f628cf53ae2c4c05627ecc484553142ca23264e593d327bcde5e9c3407"},
+    {file = "idna-2.9-py2.py3-none-any.whl", hash = "sha256:a068a21ceac8a4d63dbfd964670474107f541babbd2250d61922f029858365fa"},
+    {file = "idna-2.9.tar.gz", hash = "sha256:7588d1c14ae4c77d74036e8c22ff447b26d0fde8f007354fd48a7814db15b7cb"},
 ]
 jsonfield = [
-    {file = "jsonfield-3.0.0-py3-none-any.whl", hash = "sha256:a6616f38db42542d1f2434f5eae1a91550e5cc15dff27edd87b4358493ef2a92"},
-    {file = "jsonfield-3.0.0.tar.gz", hash = "sha256:1a17efe9a26850e9175900cb37cf30c6182fc2251989f8af44ef47fbbf48eaff"},
+    {file = "jsonfield-3.1.0-py3-none-any.whl", hash = "sha256:df857811587f252b97bafba42e02805e70a398a7a47870bc6358a0308dd689ed"},
+    {file = "jsonfield-3.1.0.tar.gz", hash = "sha256:7e4e84597de21eeaeeaaa7cc5da08c61c48a9b64d0c446b2d71255d01812887a"},
 ]
 libsass = [
     {file = "libsass-0.19.4-cp27-cp27m-macosx_10_14_intel.whl", hash = "sha256:74acd9adf506142699dfa292f0e569fdccbd9e7cf619e8226f7117de73566e32"},
@@ -616,8 +619,8 @@ rcssmin = [
     {file = "rcssmin-1.0.6.tar.gz", hash = "sha256:ca87b695d3d7864157773a61263e5abb96006e9ff0e021eff90cbe0e1ba18270"},
 ]
 requests = [
-    {file = "requests-2.22.0-py2.py3-none-any.whl", hash = "sha256:9cf5292fcd0f598c671cfc1e0d7d1a7f13bb8085e9a590f48c010551dc6c4b31"},
-    {file = "requests-2.22.0.tar.gz", hash = "sha256:11e007a8a2aa0323f5a921e9e6a2d7e4e67d9877e85773fba9ba6419025cbeb4"},
+    {file = "requests-2.23.0-py2.py3-none-any.whl", hash = "sha256:43999036bfa82904b6af1d99e4882b560e5e2c68e5c4b0aa03b655f3d7d73fee"},
+    {file = "requests-2.23.0.tar.gz", hash = "sha256:b3f43d496c6daba4493e7c431722aeb7dbc6288f52a6e04e7b6023b0247817e6"},
 ]
 rjsmin = [
     {file = "rjsmin-1.1.0-cp27-cp27m-manylinux1_i686.whl", hash = "sha256:799890bd07a048892d8d3deb9042dbc20b7f5d0eb7da91e9483c561033b23ce2"},
@@ -639,12 +642,12 @@ six = [
     {file = "six-1.14.0.tar.gz", hash = "sha256:236bdbdce46e6e6a3d61a337c0f8b763ca1e8717c03b369e87a7ec7ce1319c0a"},
 ]
 sqlparse = [
-    {file = "sqlparse-0.3.0-py2.py3-none-any.whl", hash = "sha256:40afe6b8d4b1117e7dff5504d7a8ce07d9a1b15aeeade8a2d10f130a834f8177"},
-    {file = "sqlparse-0.3.0.tar.gz", hash = "sha256:7c3dca29c022744e95b547e867cee89f4fce4373f3549ccd8797d8eb52cdb873"},
+    {file = "sqlparse-0.3.1-py2.py3-none-any.whl", hash = "sha256:022fb9c87b524d1f7862b3037e541f68597a730a8843245c349fc93e1643dc4e"},
+    {file = "sqlparse-0.3.1.tar.gz", hash = "sha256:e162203737712307dfe78860cc56c8da8a852ab2ee33750e33aeadf38d12c548"},
 ]
 unidecode = [
-    {file = "Unidecode-1.0.23-py2.py3-none-any.whl", hash = "sha256:092cdf7ad9d1052c50313426a625b717dab52f7ac58f859e09ea020953b1ad8f"},
-    {file = "Unidecode-1.0.23.tar.gz", hash = "sha256:8b85354be8fd0c0e10adbf0675f6dc2310e56fda43fa8fe049123b6c475e52fb"},
+    {file = "Unidecode-1.1.1-py2.py3-none-any.whl", hash = "sha256:1d7a042116536098d05d599ef2b8616759f02985c85b4fef50c78a5aaf10822a"},
+    {file = "Unidecode-1.1.1.tar.gz", hash = "sha256:2b6aab710c2a1647e928e36d69c21e76b453cd455f4e2621000e54b2a9b8cce8"},
 ]
 urllib3 = [
     {file = "urllib3-1.25.8-py2.py3-none-any.whl", hash = "sha256:2f3db8b19923a873b3e5256dc9c2dedfa883e33d87c690d9c7913e1f40673cdc"},

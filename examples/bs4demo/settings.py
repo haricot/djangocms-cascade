@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     #'reversion',
     'djangocms_text_ckeditor',
+    'djangocms_history',
     'django_select2',
     'cmsplugin_cascade',
     'cmsplugin_cascade.clipboard',
@@ -64,7 +65,6 @@ INSTALLED_APPS = [
     'sass_processor',
     'sekizai',
     'bs4demo',
-        'django_extensions',
 ]
 
 
