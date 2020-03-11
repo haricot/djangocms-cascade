@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils.http import urlencode
+from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
 from cms.plugin_base import CMSPluginBase, PluginMenuItem
@@ -43,7 +44,6 @@ class ClipboardWidget(widgets.Select):
 
 
 class CascadeClipboardPlugin(CMSPluginBase):
-    system = True
     render_plugin = False
     change_form_template = 'admin/cms/page/plugin/change_form.html'
 
@@ -203,10 +203,9 @@ class CascadeClipboardPlugin(CMSPluginBase):
         cascade_clipboard = form.cleaned_data['clipboard']
 
         tree_order = placeholder.get_plugin_tree_order(language)
-        if not hasattr(cascade_clipboard, 'data'):
-            deserialize_to_clipboard(request, CascadeClipboard.objects.get(identifier=cascade_clipboard).data)
-        else:
-            deserialize_to_clipboard(request,cascade_clipboard.data)
+        deserialize_to_clipboard(request, cascade_clipboard.data)
+        cascade_clipboard.last_accessed_at = now()
+        cascade_clipboard.save(update_fields=['last_accessed_at'])
 
         # detach plugins from clipboard and reattach them to current placeholder
         cb_placeholder_plugin = request.toolbar.clipboard.cmsplugin_set.first()
@@ -283,7 +282,7 @@ class CascadeClipboardPlugin(CMSPluginBase):
         language = form.cleaned_data['language']
         identifier = form.cleaned_data['identifier']
         group = form.cleaned_data['group']
-        data = serialize_from_placeholder(placeholder)
+        data = serialize_from_placeholder(placeholder,language=language)
         cascade_clipboard = CascadeClipboard.objects.create(
             identifier=identifier,
             data=data,
@@ -293,7 +292,7 @@ class CascadeClipboardPlugin(CMSPluginBase):
         
 
     def populate_db_group_clipboards(self, clipboards_groupby, identifier, group, data_clipboard):
-        clipboards_groupby[ group] = [( identifier, identifier)]
+        clipboards_groupby[group] = [(identifier, identifier)]
         clipboard_home = CascadeClipboardGroup.objects.get_or_create(name=group)
         cascade_clipboard = CascadeClipboard.objects.get_or_create(
             identifier=identifier,
