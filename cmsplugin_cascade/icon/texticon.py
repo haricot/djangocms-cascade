@@ -5,6 +5,19 @@ from cmsplugin_cascade.link.config import LinkPluginBase, LinkFormMixin
 from cmsplugin_cascade.link.plugin_base import LinkElementMixin
 from cmsplugin_cascade.icon.forms import IconFormMixin
 from cmsplugin_cascade.icon.plugin_base import IconPluginMixin
+from django.forms.fields import CharField
+from entangled.forms import EntangledModelFormMixin
+
+
+class SimpleIconFormMixin(EntangledModelFormMixin):
+    content = CharField(
+        label=_('Content'),
+        required=False,
+        help_text=_("Content inside SimpleIcon"),
+    )
+
+    class Meta:
+        entangled_fields = {'glossary': ['content']}
 
 
 class TextIconPlugin(IconPluginMixin, LinkPluginBase):

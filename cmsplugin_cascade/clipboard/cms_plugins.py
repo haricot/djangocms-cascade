@@ -292,7 +292,7 @@ class CascadeClipboardPlugin(CMSPluginBase):
         
 
     def populate_db_group_clipboards(self, clipboards_groupby, identifier, group, data_clipboard):
-        clipboards_groupby[ group] = [( identifier, identifier)]
+        clipboards_groupby[group] = [(identifier, identifier)]
         clipboard_home = CascadeClipboardGroup.objects.get_or_create(name=group)
         cascade_clipboard = CascadeClipboard.objects.get_or_create(
             identifier=identifier,
