@@ -20,10 +20,10 @@ class ImageFormMixin(EntangledModelFormMixin):
         help_text=_("Textual description of the image added to the 'alt' tag of the <img> element."),
     )
 
-    _image_properties = EntangledField()
+    image_properties = EntangledField()
 
     class Meta:
-        entangled_fields = {'glossary': ['image_file', 'image_title', 'alt_tag', '_image_properties']}
+        entangled_fields = {'glossary': ['image_file', 'image_title', 'alt_tag', 'image_properties']}
 
     def clean(self):
         cleaned_data = super().clean()
@@ -65,3 +65,4 @@ class ImagePropertyMixin(object):
         # by saving this model after the full tree has been copied, ``<Any>ImagePlugin.sanitize_model()``
         # is invoked a second time with the now complete information of all column siblings.
         self.save(sanitize_only=True)
+
