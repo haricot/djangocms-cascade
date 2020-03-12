@@ -6,30 +6,16 @@
 <link rel="stylesheet" href="{% sass_src 'bs4demo/css/main.scss' %}" type="text/css" />
 <link rel="stylesheet" href="{% static 'node_modules/sal.js/dist/sal.css' %}" type="text/css" />
 {% endaddtoblock %}
-
 {% endblock head %}
 
 {% block header %}
 {% static_placeholder 'Header Content' %}
 {% if request.toolbar and request.toolbar.edit_mode_active %}
 {% addtoblock "js" %}
-<script> 
-//Quick way to Move static_placeholder "Header Content" as first-child in structure ui
-function static_placeholder_moveto_firstchild(title){
-    var cms_structure_content = document.querySelectorAll('.cms-structure-content')[0];
-    var selector_title = `.cms-dragbar-title[title="${title}"]`
-    var cms_dragbar_title_header = document.querySelectorAll(selector_title)[0];
-    var cms_dragarea_header = cms_dragbar_title_header.parentNode.parentNode;
-    var isfirstchild = (cms_dragarea_header ==  cms_dragarea_header.parentNode.firstChild);
-    if (cms_structure_content.classList.contains('empty') || cms_dragbar_title_header && !isfirstchild ){
-    cms_structure_content.prepend(cms_dragarea_header); 
-    }
-};
-
+<script src="{% static 'cascade/js/admin/placeholder_position.js' %}" type="text/javascript"></script>
+<script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function() {
-    var observer = new MutationObserver(function(e) {static_placeholder_moveto_firstchild('Header Content');});
-    var cms_structure_content = document.querySelectorAll('.cms-structure-content')[0];
-    observer.observe(cms_structure_content, { childList: true});
+   placeholder_position_top('Header Content');
 });
 </script>
 {% endaddtoblock %}
