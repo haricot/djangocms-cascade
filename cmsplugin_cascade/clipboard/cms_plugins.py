@@ -203,6 +203,8 @@ class CascadeClipboardPlugin(CMSPluginBase):
         cascade_clipboard = form.cleaned_data['clipboard']
 
         tree_order = placeholder.get_plugin_tree_order(language)
+        if not hasattr(cascade_clipboard, 'data'):
+            cascade_clipboard = CascadeClipboard.objects.get(identifier=cascade_clipboard)
         deserialize_to_clipboard(request, cascade_clipboard.data)
         cascade_clipboard.last_accessed_at = now()
         cascade_clipboard.save(update_fields=['last_accessed_at'])
