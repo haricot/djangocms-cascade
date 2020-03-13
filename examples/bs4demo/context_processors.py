@@ -8,5 +8,7 @@ def cascade(request):
     """
     context = {
         'DJANGO_CLIENT_FRAMEWORK': settings.CMSPLUGIN_CASCADE['bootstrap4'].get('template_basedir'),
+        'languages': settings.LANGUAGES ,
+        
     }
     return context

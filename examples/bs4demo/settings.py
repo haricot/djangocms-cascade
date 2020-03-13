@@ -154,6 +154,8 @@ LANGUAGE_CODE = 'en'
 
 LANGUAGES = (
     ('en', 'English'),
+    ('fr', 'Français'),
+
 )
 
 LOGGING = {
@@ -216,7 +218,10 @@ CMSPLUGIN_CASCADE_PLUGINS = (
 )
 
 CMSPLUGIN_CASCADE = {
-    'alien_plugins': ('TextPlugin', 'TextLinkPlugin','BootstrapListPlugin', 'BootstrapNavMainMemuPlugin'),
+    'alien_plugins': ('TextPlugin', 'TextLinkPlugin','BootstrapListPlugin', 'BootstrapNavMainMemuPlugin' , 'AliasPlugin'),
+    'bootstrap4': {
+        #'template_basedir': 'angular-ui/',
+    },
     'plugins_with_sharables': {
         'BootstrapImagePlugin': ('image_shapes', 'image_width_responsive', 'image_width_fixed',
                                  'image_height', 'resize_options',),
