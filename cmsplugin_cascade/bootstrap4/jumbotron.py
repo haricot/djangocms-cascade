@@ -12,6 +12,7 @@ from cmsplugin_cascade.bootstrap4.plugin_base import BootstrapPluginBase
 from cmsplugin_cascade.bootstrap4.container import ContainerGridMixin
 from cmsplugin_cascade.bootstrap4.fields import BootstrapMultiSizeField
 from cmsplugin_cascade.bootstrap4.picture import get_picture_elements
+from cmsplugin_cascade.helpers import entangled_nested, used_compact_form
 
 logger = logging.getLogger('cascade')
 
@@ -154,6 +155,11 @@ class JumbotronFormMixin(EntangledModelFormMixin):
         help_text=_("This property specifies the width and height of a background image in px or %."),
     )
 
+    if used_compact_form:
+        entangled_nested(fluid, background_color, element_heights, image_file,
+                                 background_repeat, background_attachment,
+                                 background_vertical_position, background_horizontal_position,
+                                 background_size, background_width_height, data_nested='jumbotron')
     class Meta:
         entangled_fields = {'glossary': ['fluid', 'background_color', 'element_heights', 'image_file',
                                          'background_repeat', 'background_attachment',
@@ -195,6 +201,7 @@ class BootstrapJumbotronPlugin(BootstrapPluginBase):
     form = JumbotronFormMixin
     raw_id_fields = ['image_file']
     render_template = 'cascade/bootstrap4/jumbotron.html'
+    render_template_fallback = "cascade/generic/fallback_jumbotron.html" # mode stride gallery
     ring_plugin = 'JumbotronPlugin'
     footnote_html = """<p>
     For more information about the Jumbotron please read the

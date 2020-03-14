@@ -20,10 +20,10 @@ class ImageFormMixin(EntangledModelFormMixin):
         help_text=_("Textual description of the image added to the 'alt' tag of the <img> element."),
     )
 
-    _image_properties = EntangledField()
+    image_properties = EntangledField()
 
     class Meta:
-        entangled_fields = {'glossary': ['image_file', 'image_title', 'alt_tag', '_image_properties']}
+        entangled_fields = {'glossary': ['image_file', 'image_title', 'alt_tag', 'image_properties']}
 
     def clean(self):
         cleaned_data = super().clean()
@@ -31,10 +31,16 @@ class ImageFormMixin(EntangledModelFormMixin):
         if not image_file:
             raise ValidationError(_("No image has been selected."))
         # _image_properties are just a cached representation, maybe useless
+        
+        if image_file.mime_type == 'image/svg+xml':
+            image_file_orientation =  1
+        else:
+            image_file_orientation = image_file.exif.get('Orientation', 1)
+        # _image_properties are just a cached representation, maybe useless
         cleaned_data['_image_properties'] = {
             'width': image_file._width,
             'height': image_file._height,
-            'exif_orientation': image_file.exif.get('Orientation', 1),
+            'exif_orientation': image_file_orientation,
         }
         return cleaned_data
 
@@ -59,3 +65,4 @@ class ImagePropertyMixin(object):
         # by saving this model after the full tree has been copied, ``<Any>ImagePlugin.sanitize_model()``
         # is invoked a second time with the now complete information of all column siblings.
         self.save(sanitize_only=True)
+
