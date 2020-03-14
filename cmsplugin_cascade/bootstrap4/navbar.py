@@ -222,7 +222,6 @@ class BootstrapNavBrandImagePlugin(BootstrapPluginBase):
 class BootstrapNavCollapsePlugin(BootstrapPluginBase):
     name = _("Nav Collapse")
     parent_classes = ['BootstrapNavbarPlugin']
-    alien_child_classes = ['AliasPlugin']
     if not settings.CMSPLUGIN_CASCADE['bootstrap4'].get('template_basedir'):
         render_template = 'cascade/bootstrap4/navbar_collapse.html'
     else:
