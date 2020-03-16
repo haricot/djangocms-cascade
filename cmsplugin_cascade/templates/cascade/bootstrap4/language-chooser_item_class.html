@@ -1,0 +1,9 @@
+{% load static i18n cms_tags menu_tags sekizai_tags sass_tags shop_tags %}
+
+{% with item_class="shop-secondary-menu" %}
+{% if DJANGO_CLIENT_FRAMEWORK == 'angular-ui' %}
+{% language_chooser "bootstrap4/includes/ng-language-chooser.html" %}
+{% else %}
+{% language_chooser "bootstrap4/includes/ng-language-chooser.html" %}
+{% endif %}
+{% endwith %}

@@ -79,11 +79,25 @@ def set_defaults(config):
         BootstrapUtilities.background_and_color
     ))
     config['plugins_with_extra_mixins'].setdefault('BootstrapListsPlugin', BootstrapUtilities(
-        BootstrapUtilities.flex_directions, BootstrapUtilities.margins, BootstrapUtilities.paddings, BootstrapUtilities.display_propertys, BootstrapUtilities.background_and_color
+ BootstrapUtilities.flex_directions, BootstrapUtilities.margins, BootstrapUtilities.paddings, BootstrapUtilities.background_and_color, BootstrapUtilities.justify_content, BootstrapUtilities.flex_warps, BootstrapUtilities.align_content
+               # BootstrapUtilities.flexwarps
     ))
     config['plugins_with_extra_fields'].setdefault('BootstrapListsPlugin', PluginExtraFieldsConfig(
         inline_styles={
          'extra_fields:Colors':['color','background-color'],
+        },
+        css_classes={
+            'multiple': True,
+            'class_names': ['w-25','w-50', 'w-75', 'w-100' ],
+        },
+    ))
+    config['plugins_with_extra_mixins'].setdefault('BootstrapLiCustomPlugin', BootstrapUtilities(
+        BootstrapUtilities.margins,
+    ))
+    config['plugins_with_extra_fields'].setdefault('BootstrapLiCustomPlugin', PluginExtraFieldsConfig(
+        css_classes={
+            'multiple': True,
+            'class_names': ['w-25','w-50', 'w-75', 'w-100' , 'shop-social-icons'],
         },
     ))
     config['plugins_with_extra_mixins'].setdefault('BootstrapNavbarToogler', BootstrapUtilities(

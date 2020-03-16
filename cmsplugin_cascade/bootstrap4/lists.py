@@ -62,9 +62,21 @@ class  BootstrapListsPlugin(BootstrapPluginBase):
         obj.glossary['child_css_classes'] = ' '.join(list_child_css_classes)
         super().sanitize_model(obj)
 
+
+
 @plugin_pool.register_plugin
-class  BootstrapListsSeparatorPlugin(BootstrapPluginBase):
-    name = _("Li Separator")
+class BootstrapLiCustomPlugin(BootstrapPluginBase):
+    name = _("Li Custom")
     require_parent = True
     parent_classes = ['BootstrapListsPlugin']
-    render_template = 'cascade/bootstrap4/navbar_list_separator.html'
+    render_template = 'cascade/bootstrap4/navbar_li_custom.html'
+
+    @classmethod
+    def get_identifier(cls, obj):
+        identifier = super(BootstrapLiCustomPlugin, cls).get_identifier(obj)
+        if hasattr(cls,'default_css_class'):
+            css_classes_without_default = obj.css_classes.replace( cls.default_css_class , '' , 1)
+        else:
+            css_classes_without_default = obj.css_classes
+        return format_html('<div style="font-size: smaller; white-space: pre-wrap;" >{0}{1}</div>',
+        identifier, css_classes_without_default )

@@ -48,7 +48,6 @@ class BootstrapUtilities(type):
                 form_subfields = property_fields['form_fields']
                 attrs_type = property_fields['attrs_type']
                 property_name = property_fields['property_name']
-
                 form_fields.update(form_subfields)
                 form_fields_by_property_name[property_name]= property_fields['form_fields']
 
@@ -63,10 +62,10 @@ class BootstrapUtilities(type):
                 entangled_nested(field, data_nested=property_name , template_key=property_name)
 
         class Meta:
-            entangled_fields = {'glossary': list(form_fields.keys())}
+            entangled_fields = {'glossary': list(form_fields)}
 
         utility_form_mixin = type('UtilitiesFormMixin', (EntangledModelFormMixin,), dict(form_fields, Meta=Meta) )
-        return type('HtmlAttrsUtilitiesMixin', (CascadeUtilitiesMixin,), {'utility_form_mixin': utility_form_mixin,
+        return type('BootstrapUtilitiesMixin', (CascadeUtilitiesMixin,), {'utility_form_mixin': utility_form_mixin,
                      'attr_type': form_fields_by_attr_type , 'fields_with_choices_anchors': fields_choices_anchors })
 
     @property
@@ -234,7 +233,7 @@ class BootstrapUtilities(type):
             else:
                 choices = [(c.format(bp.name + '-'), l) for c, l in choices_format]
                 choices.insert(0, ('', _("Inherit from above")))
-            form_fields['Flex_{}'.format(bp.name)] = ChoiceField(
+            form_fields['{}_{}'.format(property_name,bp.name)] = ChoiceField(
                 label=format_lazy(_("Flex Directions for {breakpoint}"), breakpoint=bp.label),
                 choices=choices,
                 required=False,
@@ -242,6 +241,7 @@ class BootstrapUtilities(type):
             )
         property_fields = { 'form_fields':form_fields, 'attrs_type': attrs_type, 'property_name':property_name }
         return property_fields 
+
 
     @property
     def display_propertys(cls):
@@ -259,14 +259,15 @@ class BootstrapUtilities(type):
             else:
                 choices = [(c.format(bp.name + '-',  n), c.format(bp.name + '-',  n)) for c, l in choices_format for n in notation]
                 choices.insert(0, ('', _("Inherit from above")))
-            form_fields['Flex_{}'.format(bp.name)] = ChoiceField(
-                label=format_lazy(_("Flex Directions for {breakpoint}"), breakpoint=bp.label),
+            form_fields['{}_{}'.format(property_name,bp.name)] = ChoiceField(
+                label=format_lazy(_("Display Propertys for {breakpoint}"), breakpoint=bp.label),
                 choices=choices,
                 required=False,
                 initial=''
             )
         property_fields = { 'form_fields':form_fields, 'attrs_type': attrs_type, 'property_name':property_name }
         return property_fields
+
 
     @property
     def justify_content(cls):
@@ -285,7 +286,7 @@ class BootstrapUtilities(type):
                 choices = [(c.format(bp.name + '-',  n), 
                    c.format(bp.name + '-',  n)) for c, l in choices_format for n in notation]
                 choices.insert(0, ('', _("Inherit from above")))
-            form_fields['Justify_content_{}'.format(bp.name)] = ChoiceField(
+            form_fields['{}_{}'.format(property_name,bp.name)] = ChoiceField(
                 label=format_lazy(_("Justify Content for {breakpoint}"), breakpoint=bp.label),
                 choices=choices,
                 required=False,
@@ -293,6 +294,7 @@ class BootstrapUtilities(type):
             )
         property_fields = { 'form_fields':form_fields, 'attrs_type': attrs_type, 'property_name':property_name }
         return property_fields
+
 
     @property
     def positions(cls):
@@ -313,6 +315,7 @@ class BootstrapUtilities(type):
         property_fields = { 'form_fields':form_fields, 'attrs_type': attrs_type, 'property_name':property_name }
         return property_fields
 
+
     @property
     def list_inline(cls):
         form_fields = {}
@@ -331,3 +334,57 @@ class BootstrapUtilities(type):
             )
         property_fields = { 'form_fields':form_fields, 'attrs_type': attrs_type, 'property_name':property_name }
         return property_fields
+
+
+    @property
+    def flex_warps(cls):
+        form_fields = {}
+        attrs_type = 'css_classes'
+        property_name = 'flex_warps'
+        choices_format = [
+            ('flex-{}{}', _("flex-{}{}")),
+        ]
+        notation = ['nowrap', 'wrap', 'wrap-reverse']
+        for bp in Breakpoint.range(Breakpoint.xs, Breakpoint.xl):
+            if bp == Breakpoint.xs:
+                choices = [(c.format('',  n), c.format('',  n)) for c, l in choices_format for n in notation]
+                choices.insert(0, ('', _("No Display Propertys")))
+            else:
+                choices = [(c.format(bp.name + '-',  n), c.format(bp.name + '-',  n)) for c, l in choices_format for n in notation]
+                choices.insert(0, ('', _("Inherit from above")))
+            form_fields['{}_{}'.format(property_name,bp.name)] = ChoiceField(
+                label=format_lazy(_("Flex warp for {breakpoint}"), breakpoint=bp.label),
+                choices=choices,
+                required=False,
+                initial=''
+            )
+        property_fields = { 'form_fields':form_fields, 'attrs_type': attrs_type, 'property_name':property_name }
+        return property_fields
+
+
+    @property
+    def align_content(cls):
+        form_fields = {}
+        attrs_type = 'css_classes'
+        property_name = 'align_content'
+        choices_format = [
+            ('align-{}{}', _("align-{}{}")),
+        ]
+        notation = ['start', 'end', 'center', 'around', 'stretch']
+        for bp in Breakpoint.range(Breakpoint.xs, Breakpoint.xl):
+            if bp == Breakpoint.xs:
+                choices = [(c.format('',  n), c.format('',  n)) for c, l in choices_format for n in notation]
+                choices.insert(0, ('', _("No Display Propertys")))
+                choices.insert(1, ('align-content-between', _("align-content-between")))
+            else:
+                choices = [(c.format(bp.name + '-',  n), c.format(bp.name + '-',  n)) for c, l in choices_format for n in notation]
+                choices.insert(0, ('', _("Inherit from above")))
+            form_fields['{}_{}'.format(property_name,bp.name)] = ChoiceField(
+                label=format_lazy(_("Align Content for {breakpoint}"), breakpoint=bp.label),
+                choices=choices,
+                required=False,
+                initial=''
+            )
+        property_fields = { 'form_fields':form_fields, 'attrs_type': attrs_type, 'property_name':property_name }
+        return property_fields
+

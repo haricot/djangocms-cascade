@@ -124,16 +124,16 @@ class BootstrapNavbarPlugin(BootstrapPluginBase):
     @classmethod
     def get_identifier(cls, obj):
         identifier = super().get_identifier(obj)
-        css_classes_without_default = obj.css_classes.replace( cls.default_css_class ,'',1)
+        without_default_css_class = obj.css_classes.replace( cls.default_css_class ,'',1)
         return format_html('<div style="font-size: smaller; white-space: pre-wrap;" >{0}{1}</div>',
-          identifier, css_classes_without_default)
+          identifier, without_default_css_class)
 
 
  
 @plugin_pool.register_plugin
 class BootstrapNavBrandPlugin(LinkPluginBase):
     name = _("Nav brand")
-    parent_classes = ['BootstrapNavbarPlugin']
+    parent_classes = ['BootstrapNavbarPlugin', 'BootstrapContainerPlugin']
     render_template = 'cascade/bootstrap4/navbar_brand.html'
     raw_id_fields = LinkPluginBase.raw_id_fields + ['image_file']
     default_css_class = ''
@@ -152,9 +152,9 @@ class BootstrapNavBrandPlugin(LinkPluginBase):
     @classmethod
     def get_identifier(cls, obj):
         identifier = super(BootstrapNavBrandPlugin, cls).get_identifier(obj)
-        css_classes_without_default = obj.css_classes.replace( cls.default_css_class,'',1)
+        without_default_css_class = obj.css_classes.replace( cls.default_css_class,'',1)
         return format_html('<div style="font-size: smaller; white-space: pre-wrap;" >{0}{1}</div>',
-        identifier, css_classes_without_default)
+        identifier, without_default_css_class)
 
 
 class BootstrapNavBrandThumbImageFormMixin(EntangledModelFormMixin):
@@ -221,7 +221,7 @@ class BootstrapNavBrandImagePlugin(BootstrapPluginBase):
 @plugin_pool.register_plugin
 class BootstrapNavCollapsePlugin(BootstrapPluginBase):
     name = _("Nav Collapse")
-    parent_classes = ['BootstrapNavbarPlugin']
+    parent_classes = ['BootstrapNavbarPlugin', 'BootstrapContainerPlugin']
     if not settings.CMSPLUGIN_CASCADE['bootstrap4'].get('template_basedir'):
         render_template = 'cascade/bootstrap4/navbar_collapse.html'
     else:
@@ -236,9 +236,9 @@ class BootstrapNavCollapsePlugin(BootstrapPluginBase):
     @classmethod
     def get_identifier(cls, obj):
         identifier = super(BootstrapNavCollapsePlugin, cls).get_identifier(obj)
-        css_classes_without_default = obj.css_classes.replace( cls.default_css_class,'',1)
+        without_default_css_class = obj.css_classes.replace( cls.default_css_class,'',1)
         return format_html('<div style="font-size: smaller; white-space: pre-wrap;" >{0}{1}</div>',
-        identifier, css_classes_without_default)
+        identifier, without_default_css_class)
 
     @classmethod
     def sanitize_model(cls, obj):
@@ -263,18 +263,18 @@ class BootstrapNavItemsMainMenuPlugin(BootstrapPluginBase):
     def get_identifier(cls, obj):
         identifier = super(BootstrapNavItemsMainMenuPlugin, cls).get_identifier(obj)
         if hasattr(cls,'default_css_class'):
-            css_classes_without_default = obj.css_classes.replace( cls.default_css_class,'',1)
+            without_default_css_class = obj.css_classes.replace( cls.default_css_class,'',1)
         else:
-            css_classes_without_default = obj.css_classes
+            without_default_css_class = obj.css_classes
         return format_html('<div style="font-size: smaller; white-space: pre-wrap;" >{0}{1}</div>',
-        identifier, css_classes_without_default)
+        identifier, without_default_css_class)
 
 
 @plugin_pool.register_plugin
 class BootstrapNavbarToogler(BootstrapPluginBase):
     name = _("Nav toogler")
     default_css_class = 'navbar-toggler'
-    parent_classes = ['BootstrapNavbarPlugin',]
+    parent_classes = ['BootstrapNavbarPlugin', 'BootstrapContainerPlugin']
     if not settings.CMSPLUGIN_CASCADE['bootstrap4'].get('template_basedir'):
         render_template = 'cascade/bootstrap4/navbar_toogler.html'
     else:
@@ -290,4 +290,4 @@ class BootstrapNavbarLanguageChooser(BootstrapPluginBase):
     if not settings.CMSPLUGIN_CASCADE['bootstrap4'].get('template_basedir'):
         render_template = 'bootstrap4/includes/language-chooser.html'
     else:
-        render_template = 'bootstrap4/includes/ng-language-chooser.html'
+        render_template = 'cascade/bootstrap4/language-chooser_item_class.html'
