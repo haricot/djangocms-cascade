@@ -53,8 +53,13 @@ class BootstrapNavbarFormMixin(EntangledModelFormMixin):
         help_text=_("Adjust position ('fixed-top or fixed-button need to be set in Jumbotron if it is a plugin parent.')")
     )
 
+    offset_admin = CharField(
+        label=_('Adjust offset admin'),
+        help_text=_("Adjust offset admin edit mode set in Pixels (px)")
+    )
+
     class Meta:
-        entangled_fields = {'glossary':['navbar_collapse', 'navbar_color', 'navbar_bg_color', 'navbar_placement']}
+        entangled_fields = {'glossary':['navbar_collapse', 'navbar_color', 'navbar_bg_color', 'navbar_placement', 'offset_admin']}
 
     def validate_optional_field(self, name):
         field = self.fields[name]

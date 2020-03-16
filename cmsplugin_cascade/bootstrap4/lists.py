@@ -70,6 +70,7 @@ class BootstrapLiCustomPlugin(BootstrapPluginBase):
     require_parent = True
     parent_classes = ['BootstrapListsPlugin']
     render_template = 'cascade/bootstrap4/navbar_li_custom.html'
+    #TODO add bootstrap order li like cascade bootstrap columns orders if possible.
 
     @classmethod
     def get_identifier(cls, obj):

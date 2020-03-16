@@ -6,8 +6,8 @@
 {% if request.toolbar and request.toolbar.edit_mode_active %}
  {% if instance.plugin_type == 'BootstrapNavbarPlugin' and 'fixed-top' in instance.css_classes  %} 
 	<style>
-	body { padding-top:2.8rem  }
-	 .fixed-top  { top:2.8rem  !important; }
+	body { padding-top:{{ instance.offset_admin }} }
+	// .fixed-top  { top:2.8rem  !important; }
 	</style> 
 {% endif %}
 {% endif %}
