@@ -10,9 +10,9 @@ from entangled.forms import EntangledModelFormMixin
 from cmsplugin_cascade import app_settings
 from cmsplugin_cascade.bootstrap4.grid import Breakpoint
 from cmsplugin_cascade.forms import ManageChildrenFormMixin
+from cmsplugin_cascade.utils_helpers import CMS_, get_ancestor
 from .plugin_base import BootstrapPluginBase
 from . import grid
-
 
 def get_widget_choices():
     breakpoints = app_settings.CMSPLUGIN_CASCADE['bootstrap4']['fluid_bounds']
@@ -104,6 +104,8 @@ class BootstrapContainerPlugin(BootstrapPluginBase):
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
         obj.sanitize_children()
+        obj.sanitize_related_siblings()
+
 
 plugin_pool.register_plugin(BootstrapContainerPlugin)
 
@@ -127,9 +129,8 @@ class BootstrapRowFormMixin(ManageChildrenFormMixin, EntangledModelFormMixin):
 class RowGridMixin(object):
     def get_grid_instance(self):
         row = grid.Bootstrap4Row()
-        query = Q(plugin_type='BootstrapContainerPlugin') | Q(plugin_type='BootstrapColumnPlugin') \
-          | Q(plugin_type='BootstrapJumbotronPlugin')
-        container = self.get_ancestors().order_by('depth').filter(query).last().get_bound_plugin().get_grid_instance()
+        class_ancestor_name = ['BootstrapContainerPlugin', 'BootstrapColumnPlugin', 'BootstrapJumbotronPlugin']
+        container = get_ancestor( class_ancestor_name , plugin=self).get_bound_plugin().get_grid_instance()
         container.add_row(row)
         return row
 
@@ -161,11 +162,11 @@ class ColumnGridMixin(object):
                   'xs-column-offset', 'sm-column-offset', 'md-column-offset', 'lg-column-offset', 'xs-column-offset']
     def get_grid_instance(self):
         column = None
-        query = Q(plugin_type='BootstrapRowPlugin')
-        row_obj = self.get_ancestors().order_by('depth').filter(query).last().get_bound_plugin()
+        row_obj = get_ancestor(['BootstrapRowPlugin'], plugin=self).get_bound_plugin()
         # column_siblings = row_obj.get_descendants().order_by('depth').filter(plugin_type='BootstrapColumnPlugin')
         row = row_obj.get_grid_instance()
-        for column_sibling in self.get_siblings():
+        siblings = self.parent.get_children()
+        for column_sibling in  siblings:
             classes = [val for key, val in column_sibling.get_bound_plugin().glossary.items()
                        if key in self.valid_keys and val]
             if column_sibling.pk == self.pk:
@@ -195,17 +196,17 @@ class BootstrapColumnPlugin(BootstrapPluginBase):
                 return phrases[1].format(bs4_breakpoints[first].min)
             else:
                 return phrases[2]
-            
-        if 'parent' in self._cms_initial_attributes:
-            container=self._cms_initial_attributes['parent'].get_ancestors().order_by('depth').last().get_bound_plugin()
-        else:
-            containers=obj.get_ancestors().filter(plugin_type='BootstrapContainerPlugin')
-            if containers:
-                container=containers.order_by('depth').last().get_bound_plugin()
-            else:
-                jumbotrons=obj.get_ancestors().filter(plugin_type='BootstrapJumbotronPlugin')
-                container=jumbotrons.order_by('depth').last().get_bound_plugin()
-        breakpoints = container.glossary['breakpoints']
+
+        container = get_ancestor(['BootstrapContainerPlugin','BootstrapJumbotronPlugin'],
+                                 _cms_initial_attributes=self._cms_initial_attributes,
+                                 plugin=obj
+                                 ).get_bound_plugin()
+
+        if 'breakpoints' in  container.glossary:
+            breakpoints = container.glossary['breakpoints']
+        elif 'media_queries' in container.glossary:
+            #Case Jumbotron is first, its not has ancestor container
+            breakpoints = list(container.glossary['media_queries'].keys())
 
         width_fields, offset_fields, reorder_fields, responsive_fields = {}, {}, {}, {}
         units = [ngettext_lazy("{} unit", "{} units", i).format(i) for i in range(0, 13)]
@@ -334,9 +335,14 @@ class BootstrapColumnPlugin(BootstrapPluginBase):
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
         obj.sanitize_children()
+        if not CMS_:
+            obj.sanitize_related_siblings()
+
+    def sanitize_related_siblings_model(self):
+        self.sanitize_related_siblings()
 
     @classmethod
-    def sanitize_model(cls, obj):
+    def sanitize_model(cls,obj):
         sanitized = super().sanitize_model(obj)
         return sanitized
 
